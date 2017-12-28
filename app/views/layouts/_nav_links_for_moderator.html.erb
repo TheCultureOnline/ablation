@@ -1,0 +1,3 @@
+<% if current_user.includes?(:moderator)%>
+  <li><%= link_to "Mod Link", "#" %></li>
+<% end %>

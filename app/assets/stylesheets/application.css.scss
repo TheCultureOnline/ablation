@@ -13,3 +13,13 @@
  *= require_tree .
  *= require_self
  */
+
+.name a {
+    display: block;
+}
+nav.top-bar {
+    text-align:center;
+}
+div.top-bar-section {
+    display: inline-block;
+}

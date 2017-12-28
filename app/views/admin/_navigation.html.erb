@@ -1,0 +1,25 @@
+<%# navigation styled for Zurb Foundation 5 %>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name"></li>
+    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+  </ul>
+  <div class="top-bar-section">
+    <ul>
+      <%= render 'admin/navigation_links', links: nil %>
+    </ul>
+  </div>
+</nav>
+<%- unless nav_links.empty? %>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name"></li>
+    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+  </ul>
+  <div class="top-bar-section">
+    <ul>
+      <%= render 'admin/navigation_links', links: nav_links %>
+    </ul>
+  </div>
+</nav>
+<%- end %>

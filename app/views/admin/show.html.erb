@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>ID:</strong>
+  <%= @model.id %>
+</p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @model.username %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @model.email %>
+</p>
+
+<%= link_to 'Edit', send("edit_admin_#{current_model.to_s.underscore}_path", @model) %> |
+<%= link_to 'Back', [:admin, User] %>

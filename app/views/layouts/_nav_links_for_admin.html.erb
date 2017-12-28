@@ -1,0 +1,3 @@
+<%- if current_user.includes?(:admin) %>
+  <li><%= link_to "Admin", admin_dashboard_path %></li>
+<% end %>

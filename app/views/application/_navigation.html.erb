@@ -1,0 +1,21 @@
+<%# navigation styled for Zurb Foundation 5 %>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name"></li>
+    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+  </ul>
+  <div class="top-bar-section">
+    <ul>
+      <%= render 'layouts/navigation_links' %>
+    </ul>
+  </div>
+</nav>
+<nav class="top-bar" >
+  <div class="top-bar-section">
+    <ul>
+      <%= render 'layouts/nav_links_for_auth' %>
+      <%= render 'layouts/nav_links_for_moderator' %>
+      <%= render 'layouts/nav_links_for_admin' %>
+    </ul>
+  </div>
+</nav>
