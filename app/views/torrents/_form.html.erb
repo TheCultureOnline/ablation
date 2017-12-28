@@ -1,0 +1,19 @@
+<%= form_with(model: torrent, local: true) do |form| %>
+  <% if torrent.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(torrent.errors.count, "error") %> prohibited this torrent from being saved:</h2>
+
+      <ul>
+      <% torrent.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.file_field :torrent %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

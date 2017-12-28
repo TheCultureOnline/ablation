@@ -36,6 +36,9 @@ gem 'redis', '~> 3.0'
 # gem 'devise',               '~> 4.3.0'
 gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
 
+gem 'bencode'
+gem 'will_paginate'
+
 # Settings
 gem 'rails-settings-cached'
 gem 'rails-settings-ui'
@@ -43,11 +46,13 @@ gem 'rails-settings-ui'
 # Style
 gem 'foundation-rails'
 gem 'jquery-rails'
+gem 'will_paginate-foundation'
 
 # Categories
 gem 'ancestry'
 
 group :development, :test do
+  gem 'pry'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver

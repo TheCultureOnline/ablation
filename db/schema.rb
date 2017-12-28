@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171228113019) do
+ActiveRecord::Schema.define(version: 20171228155546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,32 @@ ActiveRecord::Schema.define(version: 20171228113019) do
     t.index ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true
   end
 
+  create_table "torrent_files", force: :cascade do |t|
+    t.bigint "torrent_id"
+    t.binary "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["torrent_id"], name: "index_torrent_files_on_torrent_id"
+  end
+
+  create_table "torrents", force: :cascade do |t|
+    t.string "info_hash"
+    t.string "name"
+    t.integer "file_count"
+    t.text "file_list", default: [], array: true
+    t.text "file_path", default: [], array: true
+    t.integer "size"
+    t.integer "leechers"
+    t.integer "seeders"
+    t.integer "leech"
+    t.integer "freeleech_type"
+    t.integer "snatched"
+    t.bigint "balance"
+    t.datetime "last_reseed_request"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -87,4 +113,5 @@ ActiveRecord::Schema.define(version: 20171228113019) do
 
   add_foreign_key "announcements", "users"
   add_foreign_key "category_metadata", "categories"
+  add_foreign_key "torrent_files", "torrents"
 end

@@ -1,1 +1,1 @@
-json.array! @models, partial: 'users/user', as: :user
+json.array! @models, partial: "#{current_model.to_s.underscore}", as: :user

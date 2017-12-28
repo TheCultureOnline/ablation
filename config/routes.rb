@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    get '/', to: 'dashboard#index', as: 'dashboard'
-    resources :users
-  end
+  resources :torrents
+  
 
   resources :announcements
   # root to: "devise/sessions#new"
@@ -16,7 +14,10 @@ Rails.application.routes.draw do
       # get "torrents", as: :torrents
 
       namespace :admin do
+        get '/', to: 'dashboard#index', as: 'dashboard'
+        resources :categories
         resources :users
+        resources :torrents
 
         mount RailsSettingsUi::Engine, at: 'settings'
       end

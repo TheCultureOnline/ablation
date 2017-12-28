@@ -1,19 +1,17 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>ID:</strong>
-  <%= @model.id %>
-</p>
-
-<p>
-  <strong>Username:</strong>
-  <%= @model.username %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @model.email %>
-</p>
+<%- model_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%= @model.send(attr[0]) %>
+  </p>
+<%- end %>
+<%- update_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%= @model.send(attr[0]) %>
+  </p>
+<%- end %>
 
 <%= link_to 'Edit', send("edit_admin_#{current_model.to_s.underscore}_path", @model) %> |
-<%= link_to 'Back', [:admin, User] %>
+<%= link_to 'Back', [:admin, current_model] %>

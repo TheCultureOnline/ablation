@@ -14,15 +14,15 @@ class Admin::UsersController < AdminController
       def model_attributes
         [
             [:email, {type: "email"}],
-            [:username, {type: "text"}],
+            [:username, {type: "text_field"}],
         ]
       end
 
       def update_attributes
         [
-            [:id, {type: "text", readonly: true}],
-            [:created_at, {type: "text", readonly: true}],
-            [:updated_at, {type: "text", readonly: true}],
+            [:id, {type: "text_field", readonly: true}],
+            [:created_at, {type: "text_field", readonly: true}],
+            [:updated_at, {type: "text_field", readonly: true}],
         ]
       end
 

@@ -1,6 +1,12 @@
 <%# add navigation links to this file %>
 <li><%= link_to Setting.tracker_name, root_path %></li>
-<%- %w( Torrents Collages Requests Forums IRC Top 10 Rules Wiki Staff ).each do |name| %>
+
+<%- %w( Torrents ).each do |name| %>
+    <li><%= link_to(name, send(:"#{name.downcase}_path")) %> </li>
+<% end %>
+
+<!-- Coming Soon! -->
+<%- %w( Collages Requests Forums IRC Top 10 Rules Wiki Staff ).each do |name| %>
     <li><%= link_to(name, "\##{name.downcase}_path") %> </li>
     <%# send(:"#{name.downcase}_path")) %>
 <% end %>

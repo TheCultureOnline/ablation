@@ -5,28 +5,33 @@
 <table>
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th>User</th>
+      <%- model_attributes.each do |attr| %>
+          <td><%= attr[0] %></td>
+      <%- end %>
+      <%- update_attributes.each do |attr| %>
+          <td><%= attr[0] %></td>
+      <%- end %>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @models.each do |user| %>
+    <% @models.each do |model| %>
       <tr>
-        <td><%= user.id %></td>
-        <td><%= user.username %></td>
-        <td><%= user.email %></td>
-        <td><%= link_to 'Show', admin_user_path(user) %></td>
-        <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-        <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%- model_attributes.each do |attr| %>
+            <td><%= model.send(attr[0]) %></td>
+        <%- end %>
+        <%- update_attributes.each do |attr| %>
+            <td><%= model.send(attr[0]) %></td>
+        <%- end %>
+        <td><%= link_to 'Show', [:admin, model] %></td>
+        <td><%= link_to 'Edit', [:edit, :admin, model] %></td>
+        <td><%= link_to 'Destroy', [:admin, model], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-<%- if User.can?(current_user, :admin) %>
-<%= link_to 'New User', new_admin_user_path %>
-<% end %>
+
+<%= link_to "New #{current_model.to_s}", [:new, :admin, current_model.to_s.underscore] %>
