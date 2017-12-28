@@ -27,10 +27,8 @@ ActiveRecord::Schema.define(version: 20171228155546) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.jsonb "metadata", default: "{}"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["metadata"], name: "index_categories_on_metadata"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
