@@ -1,0 +1,12 @@
+
+image: ruby2.5.0
+env:
+  - RAILS_ENV=test
+script:
+  - cp config/drone.database.yml config/database.yml
+  - bundle install
+  - psql -c 'create database test;' -U postgres -h 127.0.0.1
+  - bin/rake db:schema:load
+  - bin/rake test
+services:
+  - postgres
