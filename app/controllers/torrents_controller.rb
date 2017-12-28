@@ -14,9 +14,12 @@ class TorrentsController < ApplicationController
       format.html
       format.json
       format.torrent {
+        unless params[:torrent_pass]
+          render plain: "", :status => 400 and return
+        end
         raw = TorrentFile.where(torrent_id: @torrent.id).first
         torrent = BEncode.load(raw.data)
-        torrent['announce'] = "#{Setting.tracker_url}/#{params['torrent_pass']}/announce"
+        torrent['announce'] = "#{Setting.tracker_url}/#{params[:torrent_pass]}/announce"
         send_data( torrent.bencode, :filename => "#{@torrent.name}.torrent" )
       }
     end
