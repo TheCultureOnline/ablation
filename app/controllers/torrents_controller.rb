@@ -4,7 +4,9 @@ class TorrentsController < ApplicationController
   # GET /torrents
   # GET /torrents.json
   def index
-    @torrents = Torrent.all
+    # @torrents = Torrent.all
+    @categories = Category.all
+    @metadata = CategoryMetadatum.pluck(:name, :data_type, :options)
   end
 
   # GET /torrents/1

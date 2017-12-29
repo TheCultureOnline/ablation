@@ -48,8 +48,7 @@ gem 'foundation-rails'
 gem 'jquery-rails'
 gem 'will_paginate-foundation'
 
-# Categories
-gem 'ancestry'
+gem 'sunspot_rails'
 
 group :development, :test do
   gem 'pry'
@@ -61,6 +60,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'rails_layout'

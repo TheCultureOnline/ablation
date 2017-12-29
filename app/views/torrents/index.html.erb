@@ -1,26 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%- content_for :title do %>
+  Browse Torrents
+<%- end %>
 
-<h1>Torrents</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @torrents.each do |torrent| %>
-      <tr>
-        <td><%= torrent.name %></td>
-        <td><%= link_to 'Show', torrent %></td>
-        <td><%= link_to 'DL', torrent_path(torrent, torrent_pass: current_user.torrent_pass, format: 'torrent') %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Torrent', new_torrent_path %>
+<%= form_tag method: :get do %>
+  <%- @metadata.in_groups_of(3).each do |group| %>
+    <div class="small-6 large-4 columns">
+      <%- group.each do |field| %>
+        <%= field_for field%>
+      <%- end %>
+    </div>
+  <%- end %>
+<% end %>
