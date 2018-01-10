@@ -17,5 +17,7 @@ class CreateTorrents < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    create_index :torrents, :info_hash, unique: true
   end
 end

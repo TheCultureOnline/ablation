@@ -1,4 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<%= link_to "Download", torrent_path(@torrent, torrent_pass: current_user.torrent_pass, format: 'torrent') %>
+<br /><br />
 <%= link_to 'Edit', edit_torrent_path(@torrent) %> |
 <%= link_to 'Back', torrents_path %>

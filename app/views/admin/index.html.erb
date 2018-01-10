@@ -19,10 +19,22 @@
     <% @models.each do |model| %>
       <tr>
         <%- model_attributes.each do |attr| %>
-            <td><%= model.send(attr[0]) %></td>
+          <td>
+          <%- if attr[1][:formatter] %>
+            <%= send(attr[1][:formatter], model.send(attr[0])) %>
+          <%- else %>
+            <%= model.send(attr[0]) %>
+          <%- end %>
+          </td>
         <%- end %>
         <%- update_attributes.each do |attr| %>
-            <td><%= model.send(attr[0]) %></td>
+          <td>
+          <%- if attr[1][:formatter] %>
+            <%= send(attr[1][:formatter], model.send(attr[0])) %>
+          <%- else %>
+            <%= model.send(attr[0]) %>
+          <%- end %>
+          </td>
         <%- end %>
         <td><%= link_to 'Show', [:admin, model] %></td>
         <td><%= link_to 'Edit', [:edit, :admin, model] %></td>

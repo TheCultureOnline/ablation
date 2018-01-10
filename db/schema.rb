@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171228182329) do
+ActiveRecord::Schema.define(version: 20180110195220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,30 @@ ActiveRecord::Schema.define(version: 20171228182329) do
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_category_metadata_on_category_id"
     t.index ["id", "sort_order"], name: "index_category_metadata_on_id_and_sort_order"
+  end
+
+  create_table "peers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "torrent_id"
+    t.inet "ip", null: false
+    t.boolean "active", default: true, null: false
+    t.integer "announced", default: 0, null: false
+    t.boolean "completed", default: false, null: false
+    t.integer "downloaded", default: 0, null: false
+    t.integer "uploaded", default: 0, null: false
+    t.integer "remaining", default: 0, null: false
+    t.integer "upspeed", default: 0, null: false
+    t.integer "downspeed", default: 0, null: false
+    t.integer "timespent", default: 0, null: false
+    t.integer "corrupt", default: 0, null: false
+    t.text "useragent", default: "", null: false
+    t.boolean "connectable", default: true, null: false
+    t.binary "peer_id", default: "0", null: false
+    t.integer "port", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["torrent_id"], name: "index_peers_on_torrent_id"
+    t.index ["user_id"], name: "index_peers_on_user_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -112,5 +136,7 @@ ActiveRecord::Schema.define(version: 20171228182329) do
 
   add_foreign_key "announcements", "users"
   add_foreign_key "category_metadata", "categories"
+  add_foreign_key "peers", "torrents"
+  add_foreign_key "peers", "users"
   add_foreign_key "torrent_files", "torrents"
 end

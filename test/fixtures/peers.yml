@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  ip: 
+  active: 
+  announced: 1
+  completed: 
+  downloaded: 1
+  uploaded: 1
+  remaining: 1
+  upspeed: 1
+  downspeed: 1
+  corrupt: 
+  useragent: MyText
+  connectable: 
+  peer_id: 
+  port: 1
+
+two:
+  user: two
+  ip: 
+  active: 
+  announced: 1
+  completed: 
+  downloaded: 1
+  uploaded: 1
+  remaining: 1
+  upspeed: 1
+  downspeed: 1
+  corrupt: 
+  useragent: MyText
+  connectable: 
+  peer_id: 
+  port: 1

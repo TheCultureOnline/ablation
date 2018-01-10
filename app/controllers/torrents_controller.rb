@@ -43,18 +43,7 @@ class TorrentsController < ApplicationController
     raw = File.read(torrent.tempfile)
     torrent = BEncode.load(raw)
 
-    @torrent = Torrent.new(torrent_params)
-    @torrent.name = torrent['info']['name']
-    # Setup file lists
-    if torrent['info']['name']
-      @torrent.file_list << torrent['info']['name']
-    end
-    if torrent['info']['files']
-      torrent['info']['files'].each do |f|
-        @torrent.file_list << f['path']
-      end
-    end
-    @torrent.save
+
     # The following properties do not affect the infohash:
     # anounce-list is an unofficial extension to the protocol
     # that allows for multiple trackers per torrent
@@ -69,7 +58,22 @@ class TorrentsController < ApplicationController
     torrent['info'].delete('libtorrent_resume')
     torrent['info']['private'] = 1
   
-    TorrentFile.create!(torrent: @torrent, data: torrent.bencode)
+    torrent_file = TorrentFile.create!(torrent: @torrent, data: torrent.bencode)
+
+    @torrent = Torrent.new(torrent_params)
+    @torrent.size = torrent['info']['length']
+    @torrent.name = torrent['info']['name']
+    @torrent.info_hash = torrent_file.info_hash
+    # Setup file lists
+    if torrent['info']['name']
+      @torrent.file_list << torrent['info']['name']
+    end
+    if torrent['info']['files']
+      torrent['info']['files'].each do |f|
+        @torrent.file_list << f['path']
+      end
+    end
+    @torrent.save
 
     respond_to do |format|
       if @torrent.save

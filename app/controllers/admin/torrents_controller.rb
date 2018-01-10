@@ -1,4 +1,4 @@
-class TorrentsController < AdminController
+class Admin::TorrentsController < AdminController
   protected
   
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -13,7 +13,7 @@ class TorrentsController < AdminController
   def model_attributes
     [
         [:name, {type: "text_field"}],
-        [:description, {type: "text_area"}],
+        [:size, {type: "number_field", formatter: :number_to_human_size}],
     ]
   end
 

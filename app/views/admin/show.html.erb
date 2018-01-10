@@ -3,13 +3,21 @@
 <%- model_attributes.each do |attr| %>
   <p>
     <strong><%= attr[0] %></strong>
-    <%= @model.send(attr[0]) %>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
   </p>
 <%- end %>
 <%- update_attributes.each do |attr| %>
   <p>
     <strong><%= attr[0] %></strong>
-    <%= @model.send(attr[0]) %>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
   </p>
 <%- end %>
 
