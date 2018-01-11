@@ -9,11 +9,11 @@ services:
   - postgres:latest
 
 before_script:
-  - apt-get update && apt-get install -y locales
+  - apt-get update && apt-get install -y locales nodejs
   - echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
   - locale-gen
   - export LC_ALL=en_US.UTF-8
-  - RAILS_ENV=test bundle install --jobs $(nproc) "${FLAGS[@]}"
+  - RAILS_ENV=test bundle install --jobs $(nproc) --path /cache "${FLAGS[@]}"
   - cp config/gitlab.database.yml config/database.yml
   - RAILS_ENV=test bundle exec rake db:create db:schema:load
 
