@@ -1,6 +1,44 @@
 <p id="notice"><%= notice %></p>
+<div class="row">
+    <h4>
+        <%= @release.name %>
+        <%- if @release.year %>
+            <small>[<%= @release.year %> ]</small>
+        <%- end %>
+    </h4>
+</div>
+<div class="row">
+    <ul class="inline-list">
+        <li class="menu"><small><%= link_to "[Add format]", new_torrent_path(release_id: @release.id) %></small></li>
+    </ul>
+</div>
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Torrents</th>
+        <th>Size</th>
+        <th><%= fa_icon "clock-o", title: "Last updated" %></th>
+        <th><%= fa_icon "refresh", title: "Snatches" %></th>
+        <th><%= fa_icon "upload", title: "Seeders" %></th>
+        <th><%= fa_icon "download", title: "Leechers" %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <%- @release.torrents.each do |torrent| %>
+        <tr>
+        <td>
+            <%= torrent.name %>
+            <span style="float: right">[<%= link_to "DL", torrent_path(torrent, torrent_pass: current_user.torrent_pass, format: 'torrent') %>]</span>
+        </td>
+        <td><%= number_to_human_size torrent.size %></td>
+        <td><%= time_ago_in_words torrent.updated_at %></td>
+        <td><%= torrent.snatched %></td>
+        <td><%= torrent.seeders %></td>
+        <td><%= torrent.leechers %></td>
+        </tr>
+    <%- end %>
 
-<%= link_to "Download", torrent_path(@torrent, torrent_pass: current_user.torrent_pass, format: 'torrent') %>
-<br /><br />
-<%= link_to 'Edit', edit_torrent_path(@torrent) %> |
-<%= link_to 'Back', torrents_path %>
+    </tbody>
+  </table>
+</div>

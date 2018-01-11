@@ -10,10 +10,51 @@
       </ul>
     </div>
   <% end %>
+  <%= form.hidden_field :release_id, value: params[:release_id] %>
 
-  <%= form.file_field :torrent %>
+  <div class="row">
+    <div class="row">
+      <div class="small-3 columns">
+        <%= form.label :torrent, "Torrent file" %>
+      </div>
+      <div class="small-9 columns">
+        <%= form.file_field :torrent %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="row">
+      <div class="small-3 columns">
+        <%= form.label :name %>
+      </div>
+      <div class="small-9 columns">
+        <%= form.text_field :name, value: @release.nil? ? nil : @release.name %>
+      </div>
+    </div>
+  </div>
+  <%- if @category.movie? %>
+    <%= render partial: 'movie', locals: { torrent: @torrent, form: form } %>
+  <%- end %>
+
+  <%- if @category.music? %>
+    <%= render partial: 'music', locals: { torrent: @torrent, form: form } %>
+  <%- end %>
+
+  <%- if @category.software? %>
+    <%= render partial: 'software', locals: { torrent: @torrent, form: form } %>
+  <%- end %>
+
+  <%- if @category.tv? %>
+    <%= render partial: 'tv', locals: { torrent: @torrent, form: form } %>
+  <%- end %>
+
+  <%- if @category.ebook? %>
+    <%= render partial: 'ebook', locals: { torrent: @torrent, form: form } %>
+  <%- end %>
+
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Upload", class: "button" %>
   </div>
 <% end %>

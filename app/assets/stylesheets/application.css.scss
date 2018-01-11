@@ -14,3 +14,11 @@
  *= require_tree .
  *= require_self
  */
+
+ .row {
+    max-width: 75.5rem;
+ }
+
+form small {
+    font-size: 75%;
+}

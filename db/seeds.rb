@@ -24,20 +24,61 @@ Announcement.create!(
 
 categories = {}
 categories[:tv] = Category.find_or_create_by!(name: "TV Shows")
-
 categories[:music] = Category.find_or_create_by!(name: "Music")
-
 categories[:movies] = Category.find_or_create_by!(name: "Movies")
-
 categories[:software] = Category.find_or_create_by!(name: "Software")
+categories[:ebooks] = Category.find_or_create_by!(name: "EBook")
+
+release = Release.find_or_create_by(
+      name: "Ubuntu Desktop",
+      category_id:  categories[:software].id,
+)
+
+# 16.04 i386
+torrent = Torrent.from_file(
+  Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-i386.iso.torrent"),
+  release
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "arch",
+  value: "x86"
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "version",
+  value: "16.04.3"
+)
 
 
-[:software].each do |category_name|
-  Dir.glob(Rails.root.join("db", "files", category_name.to_s, "*")).each do |path|
-    release = Release.find_or_create_by(
-      name: path.split("/").last.sub(".torrent", "").sub(".iso", ""),
-      category_id:  categories[category_name].id
-    )
-    Torrent.from_file(path, release)
-  end
-end
+#16.04 AMD64
+torrent = Torrent.from_file(
+  Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-amd64.iso.torrent"),
+  release
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "arch",
+  value: "x86_64"
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "version",
+  value: "16.04.3"
+)
+
+#14.04 AMD64
+torrent = Torrent.from_file(
+  Rails.root.join("db", "files", "software", "ubuntu-14.04.5-desktop-amd64.iso.torrent"),
+  release
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "arch",
+  value: "x86_64"
+)
+TorrentMetadatum.create!(
+  torrent: torrent,
+  name: "version",
+  value: "14.04.5"
+)

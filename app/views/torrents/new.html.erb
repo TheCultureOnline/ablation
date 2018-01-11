@@ -1,5 +1,27 @@
-<h1>New Torrent</h1>
+<div class="row">
+    <h1>New Torrent</h1>
+    <%- if @release || @category %>
+        <%= render 'form', torrent: @torrent %>
+    <%- else %>
+        Please choose a category:
 
-<%= render 'form', torrent: @torrent %>
+        <%= form_tag '', method: :get do %>
+            <div class="row">
+                <div class="small-8 columns">
+                <div class="row">
+                    <div class="small-10 columns">
+                        <%= collection_select nil, :category_id, Category.all, :id, :name %>
+                    </div>
+                    <div class="small-2 columns actions">
+                        
+                        <%= submit_tag "Select", class: 'button postfix' %>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+        <%- end %>
+    <%- end %>
 
-<%= link_to 'Back', torrents_path %>
+    <%= link_to 'Back', torrents_path %>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110195220) do
+ActiveRecord::Schema.define(version: 20180111154655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,15 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.index ["torrent_id"], name: "index_torrent_files_on_torrent_id"
   end
 
+  create_table "torrent_metadata", force: :cascade do |t|
+    t.bigint "torrent_id"
+    t.string "name"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["torrent_id"], name: "index_torrent_metadata_on_torrent_id"
+  end
+
   create_table "torrents", force: :cascade do |t|
     t.string "info_hash", null: false
     t.string "name", null: false
@@ -139,5 +148,6 @@ ActiveRecord::Schema.define(version: 20180110195220) do
   add_foreign_key "peers", "users"
   add_foreign_key "releases", "categories"
   add_foreign_key "torrent_files", "torrents"
+  add_foreign_key "torrent_metadata", "torrents"
   add_foreign_key "torrents", "releases"
 end

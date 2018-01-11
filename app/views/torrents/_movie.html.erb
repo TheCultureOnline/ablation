@@ -1,0 +1,119 @@
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :year %>
+        </div>
+        <div class="small-3 columns">
+            <%= form.number_field :year %>
+        </div>
+        <div class="small-6 columns">
+            <p><small>This is the year of the original release.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+        <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :special, "Not main movie" %>
+        </div>
+        <div class="small-3 columns">
+            <%= form.check_box :year %>
+        </div>
+        <div class="small-6 columns">
+            <p><small>Check this only if it does NOT contain the main movie.<br />
+Examples: ONLY contains extras, Rifftrax, Workprints.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :remaster, "Edition Information" %>
+        </div>
+        <div class="small-3 columns">
+            <%= form.check_box :remaster %>
+        </div>
+        <div class="small-6 columns">
+            <p><small>Check this box if this torrent has extra edition information.<br />
+Examples: Part of a collection, special edition, or non-standard rip feature. See the edition guide here.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :personal, "Personal rip:" %>
+        </div>
+        <div class="small-3 columns">
+            <%= form.check_box :personal %>
+        </div>
+        <div class="small-6 columns">
+            <p><small>Check this only if you made this rip.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :scene %>
+        </div>
+        <div class="small-3 columns">
+            <%= form.check_box :scene %>
+        </div>
+        <div class="small-6 columns">
+            <p><small>Check this only if this is a 'scene release'. If you ripped it yourself, it is not a scene release.<br />
+You can double check by searching the file name on pre.corrupt-net.org or on srrDB.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :source %>
+        </div>
+        <div class="small-3 columns">
+            <select name="source" id="source" >
+                <option value="Blu-ray">Blu-ray</option>
+                <option value="DVD">DVD</option>
+                <option value="WEB">WEB</option>
+                <option value="---" selected="selected">---</option>
+                <option value="HD-DVD">HD-DVD</option>
+                <option value="HDTV">HDTV</option>
+                <option value="TV">TV</option>
+                <option value="VHS">VHS</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="small-6 columns">
+            <p><small>Check this only if this is a 'scene release'. If you ripped it yourself, it is not a scene release.<br />
+You can double check by searching the file name on pre.corrupt-net.org or on srrDB.</small></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row">
+        <div class="small-3 columns">
+            <%= form.label :description, "Release Description:" %>
+        </div>
+        <div class="small-9 columns">
+            <%=  form.text_area :description, class: "tinymce" %>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            <p><small>We require at least three PNG screenshots (guide), and a full MediaInfo (guide) or BDInfo (guide) log .
+Please consult our rules page for more information on required information.</small></p>
+        </div>
+    </div>
+</div>
+
+<%- content_for(:scripts) do %>
+<%= tinymce_assets %>
+<%= tinymce %>
+<%- end %>

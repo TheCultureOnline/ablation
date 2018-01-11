@@ -4,6 +4,8 @@ class Torrent < ApplicationRecord
   has_one :torrent_file, dependent: :destroy
   has_many :peers
   belongs_to :release
+  has_one :torrent_metadatum, dependent: :destroy
+
   enum freeleech_type: []
 
   def self.from_file(path, release)

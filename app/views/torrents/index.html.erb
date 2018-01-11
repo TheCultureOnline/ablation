@@ -31,7 +31,7 @@
       <%- @releases.each do |release| %>
         <tr class="release-row">
           <td>
-            <%= release.name%>
+            <%= link_to release.name, torrent_path(release) %>
             <%- if release.year %>
               [<%= release.year %>]
             <%- end %>

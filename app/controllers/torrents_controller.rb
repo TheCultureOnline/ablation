@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TorrentsController < ApplicationController
-  before_action :set_torrent, only: [:show, :edit, :update, :destroy]
+  # before_action :set_torrent, only: [:show, :edit, :update, :destroy]
 
   # GET /torrents
   # GET /torrents.json
@@ -26,9 +26,14 @@ class TorrentsController < ApplicationController
   # GET /torrents/1.json
   def show
     respond_to do |format|
-      format.html
-      format.json
+      format.html {
+        set_release
+      }
+      format.json {
+        set_release
+      }
       format.torrent {
+        set_torrent
         unless params[:torrent_pass]
           render(plain: "", status: 400) && (return)
         end
@@ -43,6 +48,14 @@ class TorrentsController < ApplicationController
   # GET /torrents/new
   def new
     @torrent = Torrent.new
+    if params[:category_id]
+      @category = Category.find(params[:category_id])
+    end
+    if params[:release_id]
+      @release = Release.find(params[:release_id])
+      @torrent.release_id = params[:release_id]
+      @category = @release.category
+    end
   end
 
   # GET /torrents/1/edit
@@ -54,12 +67,20 @@ class TorrentsController < ApplicationController
   def create
     torrent = params[:torrent].delete(:torrent)
     category_id = params[:torrent].delete(:category_id)
-    @torrent = Torrent.from_file(torrent.tempfile, category_id)
+    release = if params[:torrent][:release_id]
+      Release.find(params[:torrent].delete(:release_id))
+    else 
+      Release.find_or_create_by!(name: params[:torrent].delete(:name), category_id: category_id)
+    end
+    @torrent = Torrent.from_file(torrent.tempfile, release)
+    params[:torrent].each do |name, value|
+      TorrentMetadatum.create!(torrent: @torrent, name: name, value: value)
+    end
 
     respond_to do |format|
       if @torrent.save
-        format.html { redirect_to @torrent, notice: "Torrent was successfully created." }
-        format.json { render :show, status: :created, location: @torrent }
+        format.html { redirect_to torrent_path(release), notice: "Torrent was successfully created." }
+        format.json { render :show, status: :created, location: torrent_path(release) }
       else
         format.html { render :new }
         format.json { render json: @torrent.errors, status: :unprocessable_entity }
@@ -71,6 +92,10 @@ class TorrentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_torrent
       @torrent = Torrent.find(params[:id])
+    end
+
+    def set_release
+      @release = Release.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
