@@ -1,11 +1,13 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <p id="notice"><%= notice %></p>
 
-<h1>
-  Announcements
-  <%- if User.can?(current_user, :admin) %>
-    <small><%= link_to 'New Announcement', new_announcement_path %></small>
-  <% end %>
-</h1>
-<%- @announcements.each do |announcement| %>
-  <%= render partial: 'single', locals: { announcement: announcement }%>
-<%- end %>
+  <h1>
+    Announcements
+    <%- if User.can?(current_user, :admin) %>
+      <small><%= link_to 'New Announcement', new_announcement_path %></small>
+    <% end %>
+  </h1>
+  <%- @announcements.each do |announcement| %>
+    <%= render partial: 'single', locals: { announcement: announcement }%>
+  <%- end %>
+</div>

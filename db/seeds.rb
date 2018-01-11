@@ -34,6 +34,10 @@ categories[:software] = Category.find_or_create_by!(name: "Software")
 
 [:software].each do |category_name|
   Dir.glob(Rails.root.join("db", "files", category_name.to_s, "*")).each do |path|
-    Torrent.from_file(path, categories[category_name].id)
+    release = Release.find_or_create_by(
+      name: path.split("/").last.sub(".torrent", "").sub(".iso", ""),
+      category_id:  categories[category_name].id
+    )
+    Torrent.from_file(path, release)
   end
 end

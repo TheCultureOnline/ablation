@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
-class Admin::TorrentsController < AdminController
+class Admin::ReleasesController < AdminController
   protected
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def model_params
-      params.require(:torrent).permit(:name)
+      params.require(:release).permit(:name, :year)
     end
 
     def current_model
-      Torrent
+      Release
     end
 
     def model_attributes
       [
           [:name, { type: "text_field" }],
-          [:size, { type: "number_field", formatter: :number_to_human_size }],
+          [:year, { type: "number_field" }],
       ]
     end
 
     def nav_links
       [
-          ["List", [:admin, :torrents]],
-          ["New", [:new, :admin, :torrent]]
+          ["List", [:admin, :releases]],
+          ["New", [:new, :admin, :release]]
       ]
     end
 end

@@ -12,16 +12,16 @@
   <% end %>
 
   <%- model_attributes.each do |attr| %>
-    <%= field_for(form, model, attr) %>
+    <%= admin_field_for(form, model, attr) %>
   <%- end %>
 
   <%- if model.new_record? %>
     <%- new_attributes.each do |attr| %>
-      <%= field_for(form, model, attr) %>
+      <%= admin_field_for(form, model, attr) %>
     <%- end %>
   <%- else %>
     <%- update_attributes.each do |attr| %>
-      <%= field_for(form, model, attr) %>
+      <%= admin_field_for(form, model, attr) %>
     <%- end %>
   <%- end %>
 

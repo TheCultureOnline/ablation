@@ -57,6 +57,16 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.index ["user_id"], name: "index_peers_on_user_id"
   end
 
+  create_table "releases", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "year"
+    t.text "description"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_releases_on_category_id"
+  end
+
   create_table "settings", force: :cascade do |t|
     t.string "var", null: false
     t.text "value"
@@ -76,24 +86,24 @@ ActiveRecord::Schema.define(version: 20180110195220) do
   end
 
   create_table "torrents", force: :cascade do |t|
-    t.string "info_hash"
-    t.string "name"
-    t.integer "file_count"
-    t.text "file_list", default: [], array: true
-    t.text "file_path", default: [], array: true
-    t.integer "size"
-    t.integer "leechers"
-    t.integer "seeders"
+    t.string "info_hash", null: false
+    t.string "name", null: false
+    t.integer "file_count", null: false
+    t.text "file_list", default: [], null: false, array: true
+    t.text "file_path", default: [], null: false, array: true
+    t.integer "size", default: 0, null: false
+    t.integer "leechers", default: 0, null: false
+    t.integer "seeders", default: 0, null: false
     t.integer "leech"
     t.integer "freeleech_type"
-    t.integer "snatched"
+    t.integer "snatched", default: 0, null: false
     t.bigint "balance"
-    t.bigint "category_id"
+    t.bigint "release_id"
     t.datetime "last_reseed_request"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_torrents_on_category_id"
     t.index ["info_hash"], name: "index_torrents_on_info_hash", unique: true
+    t.index ["release_id"], name: "index_torrents_on_release_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -127,6 +137,7 @@ ActiveRecord::Schema.define(version: 20180110195220) do
   add_foreign_key "announcements", "users"
   add_foreign_key "peers", "torrents"
   add_foreign_key "peers", "users"
+  add_foreign_key "releases", "categories"
   add_foreign_key "torrent_files", "torrents"
-  add_foreign_key "torrents", "categories"
+  add_foreign_key "torrents", "releases"
 end

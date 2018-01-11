@@ -1,23 +1,24 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :torrents
-
-  resources :announcements
   # root to: "devise/sessions#new"
   # user_root to: "announcements#index"
 
   devise_for :users
 
+  resources :torrents
+
+  resources :announcements
+
   devise_scope :user do
     authenticated :user do
       root "announcements#index", as: :root
       # get "torrents", as: :torrents
-
       namespace :admin do
         get "/", to: "dashboard#index", as: "dashboard"
         resources :categories
         resources :users
+        resources :releases
         resources :torrents
 
         mount RailsSettingsUi::Engine, at: "settings"

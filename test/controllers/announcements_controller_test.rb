@@ -8,15 +8,17 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @announcement = announcements(:one)
     @admin = users(:admin)
+    @user = users(:user)
   end
 
   test "should get index" do
+    sign_in @admin
     get announcements_url
     assert_response :success
   end
 
   test "should get new" do
-    sign_in @admin
+    sign_in @user
     get new_announcement_url
     assert_response :success
   end
@@ -31,6 +33,7 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show announcement" do
+    sign_in @user
     get announcement_url(@announcement)
     assert_response :success
   end

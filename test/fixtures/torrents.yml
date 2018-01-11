@@ -13,6 +13,8 @@ one:
   snatched: 1
   balance: 
   last_reseed_request: 
+  release: one
+  name: one
 
 two:
   info_hash: MyString2
@@ -27,3 +29,5 @@ two:
   snatched: 1
   balance: 
   last_reseed_request: 
+  release: two
+  name: two

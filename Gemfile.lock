@@ -110,11 +110,14 @@ GEM
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
+    font-awesome-rails (4.7.0.3)
+      railties (>= 3.2, < 5.2)
     foundation-rails (5.4.5.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    highline (1.7.10)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
@@ -143,6 +146,7 @@ GEM
     nio4r (2.2.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
+    options (2.3.2)
     orm_adapter (0.5.0)
     parallel (1.12.1)
     parser (2.4.0.2)
@@ -150,6 +154,9 @@ GEM
     pg (0.21.0)
     powerpack (0.1.1)
     pr_geohash (1.0.0)
+    progress_bar (1.1.0)
+      highline (~> 1.6)
+      options (~> 2.3.0)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -286,11 +293,13 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise!
+  font-awesome-rails
   foundation-rails
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)
+  progress_bar
   pry
   puma (~> 3.7)
   rails (~> 5.1.4)

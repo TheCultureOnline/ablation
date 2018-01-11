@@ -6,8 +6,20 @@ class TorrentsController < ApplicationController
   # GET /torrents
   # GET /torrents.json
   def index
-    # @torrents = Torrent.all
+    # @torrents = Torrent.page()
     @categories = Category.all
+    # @releases = Release.search(include: [:torrents]) do
+    #   fulltext params[:name] if params[:name]
+    #   if params[:page]
+    #     paginate page: params[:page], per_page: 10
+    #   else
+    #     paginate page: 1, per_page: 10
+    #   end
+    #   with(:category_id, params[:category_id]) if params[:category_id]
+    # end.results
+    @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).includes(:torrents)
+    @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name] }%") if params[:name]
+    @releases = @releases.where(year: params[:year]) if params[:year]
   end
 
   # GET /torrents/1

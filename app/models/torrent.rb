@@ -3,11 +3,10 @@
 class Torrent < ApplicationRecord
   has_one :torrent_file, dependent: :destroy
   has_many :peers
-  # searchable do
-  #     text :name
-  # end
+  belongs_to :release
+  enum freeleech_type: []
 
-  def self.from_file(path, category_id)
+  def self.from_file(path, release)
     raw = File.read(path)
     raw_torrent = BEncode.load(raw)
 
@@ -16,6 +15,7 @@ class Torrent < ApplicationRecord
     # anounce-list is an unofficial extension to the protocol
     # that allows for multiple trackers per torrent
     raw_torrent["info"].delete("announce-list")
+    raw_torrent.delete("announce-list")
     # Bitcomet & Azureus cache peers in here
     raw_torrent["info"].delete("nodes")
     # Azureus stores the dht_backup_enable flag here
@@ -32,7 +32,7 @@ class Torrent < ApplicationRecord
       size: raw_torrent["info"]["length"],
       name: raw_torrent["info"]["name"],
       info_hash: torrent_file.info_hash,
-      category_id: category_id,
+      release: release,
     )
     # Setup file lists
     if raw_torrent["info"]["name"]
@@ -43,6 +43,7 @@ class Torrent < ApplicationRecord
         torrent.file_list << f["path"]
       end
     end
+    torrent.file_count = torrent.file_list.length
     torrent.save!
     torrent_file.torrent = torrent
     torrent_file.save!

@@ -1,7 +1,62 @@
 <%- content_for :title do %>
   Browse Torrents
 <%- end %>
+<div class="row">
+  <%= form_tag '', method: :get do %>
+      <div class="field">
+        <%= text_field_tag :name, params[:name], placeholder: "Name" %>
+      </div>
+      <div class="field">
+        <%= number_field_tag :year, params[:year], placeholder: "Year" %>
+      </div>
 
-<%= form_tag method: :get do %>
+      <div class="actions">
+        <%= submit_tag "Filter" %>
+      </div>
+  <% end %>
+</div>
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name / Year</th>
+        <th>Size</th>
+        <th><%= fa_icon "clock-o", title: "Last updated" %></th>
+        <th><%= fa_icon "refresh", title: "Snatches" %></th>
+        <th><%= fa_icon "upload", title: "Seeders" %></th>
+        <th><%= fa_icon "download", title: "Leechers" %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%- @releases.each do |release| %>
+        <tr class="release-row">
+          <td>
+            <%= release.name%>
+            <%- if release.year %>
+              [<%= release.year %>]
+            <%- end %>
+          </td>
+          <td><%= number_to_human_size release.torrents.maximum(:size) %> (MAX)</td>
+          <td><%= time_ago_in_words release.torrents.maximum(:updated_at) %></td>
+          <td><%= release.torrents.sum(:snatched) %></td>
+          <td><%= release.torrents.sum(:seeders) %></td>
+          <td><%= release.torrents.sum(:leechers) %></td>
+        </tr>
+        <%- release.torrents.each do |torrent| %>
+          <tr>
+            <td>
+              <%= torrent.name %>
+              <span style="float: right">[<%= link_to "DL", torrent_path(torrent, torrent_pass: current_user.torrent_pass, format: 'torrent') %>]</span>
+            </td>
+            <td><%= number_to_human_size torrent.size %></td>
+            <td><%= time_ago_in_words torrent.updated_at %></td>
+            <td><%= torrent.snatched %></td>
+            <td><%= torrent.seeders %></td>
+            <td><%= torrent.leechers %></td>
+          </tr>
+        <%- end %>
+      <%- end %>
 
-<% end %>
+    </tbody>
+  </table>
+</div>

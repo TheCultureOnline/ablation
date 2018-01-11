@@ -29,6 +29,15 @@ The test suite can be run with:
 bundle exec rails test
 ```
 
+To run the application, in separate tabs:
+
+```bash
+# Subspot will be coming soon to support more ful text search
+# bundle exec rake sunspot:solr:run
+bundle exec rails s
+```
+
+
 ## Setting up your own
 
 Coming soon...

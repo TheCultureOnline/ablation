@@ -4,8 +4,7 @@ require "bencode"
 
 class TrackerController < ApplicationController
   def announce
-    user = User.where(torrent_pass: params[:torrent_pass]).first
-    failure("invalid torrent_pass specified") && (return) if user.nil?
+    failure("invalid torrent_pass specified") && (return) if @user.nil?
     failure("info_hash is missing") && (return) if params["info_hash"].nil?
     failure("peer_id is missing") && (return) if params["peer_id"].nil?
     failure("port is missing") && (return) if params["port"].nil?
@@ -16,7 +15,7 @@ class TrackerController < ApplicationController
     torrent = Torrent.where(info_hash: hash).first
 
     info_hash = InfoHash.new(hash, torrent)
-    event! user, torrent
+    event! @user, torrent
     announce = info_hash.announce(
       params[:compact].to_i == 1,
         params[:no_peer_id].to_i == 1,
@@ -27,8 +26,7 @@ class TrackerController < ApplicationController
   end
 
   def scrape
-    user = User.where(torrent_pass: params[:torrent_pass]).first
-    failure("invalid torrent_pass specified") && (return) if user.nil?
+    failure("invalid torrent_pass specified") && (return) if @user.nil?
     #     content_type 'text/plain'
     if params[:info_hash]
       failure "invalid info_hash" if params[:info_hash].bytesize != 20
@@ -54,6 +52,7 @@ class TrackerController < ApplicationController
         else
           ip = params[:ip] ||= request.env["REMOTE_ADDR"]
           peer = Peer.where(user_id: user.id, peer_id: params[:peer_id], torrent: torrent).first_or_initialize
+          new_peer = peer.new_record?
           peer.update(
             active: true,
               ip: ip,
@@ -64,6 +63,15 @@ class TrackerController < ApplicationController
               completed: params[:left].to_i == 0,
               user_agent: request.user_agent,
           )
+          torrent.increment!(:snatched) if new_peer
+          torrent.update!(
+            leechers: torrent.peers.where(active: true).where.not(remaining: 0).count,
+            seeders: torrent.peers.where(active: true).where(remaining: 0).count,
+          )
         end
+      end
+
+      def authenticate_user!
+        @user = User.where(torrent_pass: params[:torrent_pass]).first
       end
 end
