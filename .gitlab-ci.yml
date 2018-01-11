@@ -1,5 +1,4 @@
-
-image: ruby2.5.0
+image: ruby:2.5
 
 variables:
   POSTGRES_DB: test_db
