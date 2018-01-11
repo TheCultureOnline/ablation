@@ -1,0 +1,19 @@
+
+image: ruby2.5.0
+
+variables:
+  POSTGRES_DB: test_db
+  POSTGRES_USER: runner
+  POSTGRES_PASSWORD: ""
+
+services:
+  - postgres:latest
+
+before_script:
+  - RAILS_ENV=test bundle install --jobs $(nproc) "${FLAGS[@]}"
+  - cp config/gitlab.database.yml config/database.yml
+  - RAILS_ENV=test bundle exec rake db:create db:schema:load
+
+test:
+  script:
+    - RAILS_ENV=test bin/rake test
