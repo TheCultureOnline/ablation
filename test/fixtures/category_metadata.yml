@@ -2,10 +2,10 @@
 
 one:
   name: MyString
-  data_type: 1
+  data_type: 0
   sort_order: 1
 
 two:
-  name: MyString
-  data_type: 1
+  name: MyString2
+  data_type: 0
   sort_order: 1

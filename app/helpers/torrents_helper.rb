@@ -2,7 +2,8 @@
 
 module TorrentsHelper
   def field_for(attr)
-    puts "About to make a field for : #{attr}"
+    return if attr.nil?
+    Rails.logger.debug("About to make a field for : #{attr}")
     # attr should be an array of fields, with the structure:
     # [ name, type, [options] ]
     content_tag(:div, class: "field") do

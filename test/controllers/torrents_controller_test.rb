@@ -3,16 +3,21 @@
 require "test_helper"
 
 class TorrentsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @torrent = torrents(:one)
+    @user = users(:user)
   end
 
   test "should get index" do
+    sign_in @user
     get torrents_url
     assert_response :success
   end
 
   test "should get new" do
+    sign_in @user
     get new_torrent_url
     assert_response :success
   end
@@ -27,11 +32,13 @@ class TorrentsControllerTest < ActionDispatch::IntegrationTest
   # end
 
   test "should show torrent" do
+    sign_in @user
     get torrent_url(@torrent)
     assert_response :success
   end
 
   test "should get edit" do
+    sign_in @user
     get edit_torrent_url(@torrent)
     assert_response :success
   end

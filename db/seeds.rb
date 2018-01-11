@@ -22,8 +22,8 @@ music = Category.find_or_create_by!(name: "Music")
 begin # Add metadata for Music
   music.category_metadata.find_or_create_by!(
     sort_order: 0,
-      name: "Artists",
-      data_type: CategoryMetadatum.data_types[:array])
+    name: "Artists",
+    data_type: CategoryMetadatum.data_types[:array])
   music.category_metadata.find_or_create_by!(
     sort_order: 1,
     name: "Album Title",

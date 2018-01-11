@@ -2,34 +2,34 @@
 
 one:
   user: one
-  ip: 
-  active: 
+  ip: 10.0.0.1
+  active: true
   announced: 1
-  completed: 
+  completed: false
   downloaded: 1
   uploaded: 1
   remaining: 1
   upspeed: 1
   downspeed: 1
-  corrupt: 
+  corrupt: 0
   useragent: MyText
-  connectable: 
-  peer_id: 
+  connectable: true
+  peer_id: test-123
   port: 1
 
 two:
   user: two
-  ip: 
-  active: 
+  ip: 10.0.0.2
+  active: false
   announced: 1
-  completed: 
+  completed: false
   downloaded: 1
   uploaded: 1
   remaining: 1
   upspeed: 1
   downspeed: 1
-  corrupt: 
+  corrupt: 0
   useragent: MyText
-  connectable: 
-  peer_id: 
+  connectable: true
+  peer_id: test-321
   port: 1
