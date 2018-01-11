@@ -1,24 +1,32 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## TODO:
 
-Things you may want to cover:
+### Badges
 
-* Ruby version
+- codeclimate
+- coveralls (github)
+- ci / migrate to travis (github)
 
-* System dependencies
+### Search
 
-* Configuration
+Solr will be fully integrated soon, allowing true full text search of torrents.
 
-* Database creation
+## Getting started
 
-* Database initialization
+Ablation is developed (primarily) and tested with Ruby 2.5.
 
-* How to run the test suite
+```bash
+bundle install
+bundle exec rails db:create db:schema:load db:seed
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+The test suite can be run with:
 
-* Deployment instructions
+```bash
+bundle exec rails test
+```
 
-* ...
+## Setting up your own
+
+Coming soon...
