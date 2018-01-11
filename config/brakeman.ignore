@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4ad056b4c9a4d535ba7e58d1fd253484cfe6f680b719a883036d860979d116c4",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/info_hash.rb",
+      "line": 55,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"WITH t AS (\\n        SELECT id, downloaded, completed, remaining\\n        FROM peers\\n        WHERE \\\"peers\\\".\\\"torrent_id\\\" = 1\\n        AND (\\\"peers\\\".\\\"updated_at\\\" > NOW() - interval '#{(Setting.announce_interval * 2)} seconds')\\n    )\\n    SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,\\n           (SELECT COUNT(t.completed) from t) AS completed,\\n           (SELECT COUNT(id) from t WHERE t.remaining != 0) AS incomplete\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "InfoHash",
+        "method": "scrape"
+      },
+      "user_input": "(Setting.announce_interval * 2)",
+      "confidence": "High",
+      "note": "The only person who could potentially inject here is the site admin"
+    }
+  ],
+  "updated": "2018-01-11 09:17:21 +0100",
+  "brakeman_version": "4.1.1"
+}

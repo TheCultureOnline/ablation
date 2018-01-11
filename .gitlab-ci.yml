@@ -25,3 +25,7 @@ test:
 lint:
   script:
     - bundle exec rubocop
+
+static_analysis:
+  script:
+    - bundle exec brakeman -q
