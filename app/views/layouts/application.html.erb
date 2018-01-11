@@ -20,5 +20,6 @@
     <%# Modernizr is required for Zurb Foundation %>
     <%= javascript_include_tag 'vendor/modernizr' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+    <%= yield(:scripts) %>
   </body>
 </html>

@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label :title %>
-    <%= form.text_area :title, id: :announcement_title %>
+    <%= form.text_field :title, id: :announcement_title %>
   </div>
 
   <div class="field">
     <%= form.label :body %>
-    <%= form.text_area :body, id: :announcement_body %>
+    <%= form.text_area :body, id: :announcement_body, class: "tinymce" %>
   </div>
 
   <div class="field">
@@ -30,3 +30,8 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<%- content_for(:scripts) do %>
+<%= tinymce_assets %>
+<%= tinymce %>
+<%- end %>

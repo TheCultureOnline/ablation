@@ -1,0 +1,12 @@
+<div class="panel">
+    <h4>
+        <%= announcement.title %>
+        <small>
+            posted by <%= announcement.user.username %> <%= time_ago_in_words announcement.created_at %> ago
+            <%- if User.can?(current_user, :moderator) %>
+            <%= link_to 'Edit', edit_announcement_path(announcement) %> | <%= link_to 'Destroy', announcement, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%- end %>
+        </small>
+    </h4>
+    <%= announcement.body.html_safe %>
+</div>

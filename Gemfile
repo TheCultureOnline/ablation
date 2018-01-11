@@ -49,6 +49,7 @@ gem "rails-settings-ui"
 gem "foundation-rails"
 gem "jquery-rails"
 gem "will_paginate-foundation"
+gem "tinymce-rails"
 
 gem "sunspot_rails"
 

@@ -7,7 +7,7 @@ class AnnouncementsController < ApplicationController
   # GET /announcements
   # GET /announcements.json
   def index
-    @announcements = Announcement.all
+    @announcements = Announcement.all.includes(:user)
   end
 
   # GET /announcements/1
@@ -76,7 +76,7 @@ class AnnouncementsController < ApplicationController
     end
 
     def authorized?
-      unless User.can?(current_user, :admin)
+      unless User.can?(current_user, :moderator)
         flash[:error] = "You are not authorized to view that page."
         redirect_to root_path
       end

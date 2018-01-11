@@ -1,32 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Announcements</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @announcements.each do |announcement| %>
-      <tr>
-        <td><%= announcement.title %></td>
-        <td><%= announcement.body %></td>
-        <td><%= announcement.user %></td>
-        <td><%= link_to 'Show', announcement %></td>
-        <td><%= link_to 'Edit', edit_announcement_path(announcement) %></td>
-        <td><%= link_to 'Destroy', announcement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-<%- if User.can?(current_user, :admin) %>
-<%= link_to 'New Announcement', new_announcement_path %>
-<% end %>
+<h1>
+  Announcements
+  <%- if User.can?(current_user, :admin) %>
+    <small><%= link_to 'New Announcement', new_announcement_path %></small>
+  <% end %>
+</h1>
+<%- @announcements.each do |announcement| %>
+  <%= render partial: 'single', locals: { announcement: announcement }%>
+<%- end %>
