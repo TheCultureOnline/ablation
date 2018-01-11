@@ -4,6 +4,7 @@ variables:
   POSTGRES_DB: test_db
   POSTGRES_USER: runner
   POSTGRES_PASSWORD: ""
+  RAILS_ENV: test
 
 services:
   - postgres:latest
@@ -19,7 +20,7 @@ before_script:
 
 test:
   script:
-    - RAILS_ENV=test bin/rails test
+    - bundle exec rails test
 
 lint:
   script:
