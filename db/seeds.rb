@@ -30,8 +30,8 @@ categories[:software] = Category.find_or_create_by!(name: "Software")
 categories[:ebooks] = Category.find_or_create_by!(name: "EBook")
 
 release = Release.find_or_create_by(
-      name: "Ubuntu Desktop",
-      category_id:  categories[:software].id,
+  name: "Ubuntu Desktop",
+  category_id:  categories[:software].id,
 )
 
 # 16.04 i386
@@ -51,7 +51,7 @@ TorrentMetadatum.create!(
 )
 
 
-#16.04 AMD64
+# 16.04 AMD64
 torrent = Torrent.from_file(
   Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-amd64.iso.torrent"),
   release
@@ -67,7 +67,7 @@ TorrentMetadatum.create!(
   value: "16.04.3"
 )
 
-#14.04 AMD64
+# 14.04 AMD64
 torrent = Torrent.from_file(
   Rails.root.join("db", "files", "software", "ubuntu-14.04.5-desktop-amd64.iso.torrent"),
   release

@@ -60,6 +60,9 @@ class TorrentsController < ApplicationController
 
   # GET /torrents/1/edit
   def edit
+    set_torrent
+    @release = @torrent.release
+    @category = @release.category
   end
 
   # POST /torrents
@@ -69,7 +72,7 @@ class TorrentsController < ApplicationController
     category_id = params[:torrent].delete(:category_id)
     release = if params[:torrent][:release_id]
       Release.find(params[:torrent].delete(:release_id))
-    else 
+    else
       Release.find_or_create_by!(name: params[:torrent].delete(:name), category_id: category_id)
     end
     @torrent = Torrent.from_file(torrent.tempfile, release)

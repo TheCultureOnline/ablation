@@ -4,8 +4,10 @@ one:
   name: MyString
   year: 1
   description: MyText
+  category: movies
 
 two:
   name: MyString
   year: 1
   description: MyText
+  category: movies

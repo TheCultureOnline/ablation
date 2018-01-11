@@ -55,7 +55,7 @@ gem "font-awesome-rails"
 gem "sunspot_rails"
 gem "progress_bar", require: false
 
-gem 'newrelic_rpm'
+gem "newrelic_rpm"
 
 group :development, :test do
   gem "pry"

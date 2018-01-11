@@ -38,28 +38,8 @@
       "user_input": "(Setting.announce_interval * 2)",
       "confidence": "High",
       "note": "The only person who could potentially inject here is the site admin"
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "93483dfcd74e001bca919f80cecc1da4c804583190c4bc802e28792ea808fd78",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/torrents_controller.rb",
-      "line": 61,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(Torrent.from_file(params[:torrent].delete(:torrent).tempfile, params[:torrent].delete(:category_id)), :notice => \"Torrent was successfully created.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "TorrentsController",
-        "method": "create"
-      },
-      "user_input": "Torrent.from_file(params[:torrent].delete(:torrent).tempfile, params[:torrent].delete(:category_id))",
-      "confidence": "High",
-      "note": "This redirect is entirely built by managing a Torrent, no open redirect"
     }
   ],
-  "updated": "2018-01-11 12:30:35 +0100",
+  "updated": "2018-01-11 17:17:16 +0100",
   "brakeman_version": "4.1.1"
 }

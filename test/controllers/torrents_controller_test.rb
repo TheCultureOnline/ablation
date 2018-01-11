@@ -8,6 +8,7 @@ class TorrentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @torrent = torrents(:one)
     @user = users(:user)
+    @category = categories(:movies)
   end
 
   test "should get index" do
@@ -18,7 +19,7 @@ class TorrentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get new" do
     sign_in @user
-    get new_torrent_url
+    get new_torrent_url(category_id: @category.id)
     assert_response :success
   end
 
