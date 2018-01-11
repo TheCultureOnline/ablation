@@ -11,6 +11,6 @@ class TorrentFile < ApplicationRecord
 
   def info_hash
     info = torrent_data["info"].bencode
-    hash = Digest::SHA1.hexdigest info
+    Digest::SHA1.hexdigest info
   end
 end

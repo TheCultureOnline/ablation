@@ -12,7 +12,7 @@ one:
   upspeed: 1
   downspeed: 1
   corrupt: 0
-  useragent: MyText
+  user_agent: MyText
   connectable: true
   peer_id: test-123
   port: 1
@@ -29,7 +29,7 @@ two:
   upspeed: 1
   downspeed: 1
   corrupt: 0
-  useragent: MyText
+  user_agent: MyText
   connectable: true
   peer_id: test-321
   port: 1

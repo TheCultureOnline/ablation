@@ -8,7 +8,6 @@ class TorrentsController < ApplicationController
   def index
     # @torrents = Torrent.all
     @categories = Category.all
-    @metadata = CategoryMetadatum.pluck(:name, :data_type, :options)
   end
 
   # GET /torrents/1
@@ -42,40 +41,8 @@ class TorrentsController < ApplicationController
   # POST /torrents.json
   def create
     torrent = params[:torrent].delete(:torrent)
-    raw = File.read(torrent.tempfile)
-    torrent = BEncode.load(raw)
-
-
-    # The following properties do not affect the infohash:
-    # anounce-list is an unofficial extension to the protocol
-    # that allows for multiple trackers per torrent
-    torrent["info"].delete("announce-list")
-    # Bitcomet & Azureus cache peers in here
-    torrent["info"].delete("nodes")
-    # Azureus stores the dht_backup_enable flag here
-    torrent["info"].delete("azureus_properties")
-    # Remove web-seeds
-    torrent["info"].delete("url-list")
-    # Remove libtorrent resume info
-    torrent["info"].delete("libtorrent_resume")
-    torrent["info"]["private"] = 1
-
-    torrent_file = TorrentFile.create!(torrent: @torrent, data: torrent.bencode)
-
-    @torrent = Torrent.new(torrent_params)
-    @torrent.size = torrent["info"]["length"]
-    @torrent.name = torrent["info"]["name"]
-    @torrent.info_hash = torrent_file.info_hash
-    # Setup file lists
-    if torrent["info"]["name"]
-      @torrent.file_list << torrent["info"]["name"]
-    end
-    if torrent["info"]["files"]
-      torrent["info"]["files"].each do |f|
-        @torrent.file_list << f["path"]
-      end
-    end
-    @torrent.save
+    category_id = params[:torrent].delete(:category_id)
+    @torrent = Torrent.from_file(torrent.tempfile, category_id)
 
     respond_to do |format|
       if @torrent.save

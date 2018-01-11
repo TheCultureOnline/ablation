@@ -62,7 +62,7 @@ class TrackerController < ApplicationController
               remaining: params[:left].to_i,
               port: params[:port].to_i,
               completed: params[:left].to_i == 0,
-              useragent: request.user_agent,
+              user_agent: request.user_agent,
           )
         end
       end

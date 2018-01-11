@@ -13,11 +13,13 @@ class CreateTorrents < ActiveRecord::Migration[5.1]
       t.integer :freeleech_type
       t.integer :snatched
       t.bigint :balance
+
+      t.references :category, foreign_key: true
       t.timestamp :last_reseed_request
 
       t.timestamps
     end
 
-    create_index :torrents, :info_hash, unique: true
+    add_index :torrents, :info_hash, unique: true
   end
 end

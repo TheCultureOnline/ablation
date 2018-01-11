@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(version: 20180110195220) do
   enable_extension "plpgsql"
 
   create_table "announcements", force: :cascade do |t|
-    t.text "title"
-    t.text "body"
+    t.text "title", null: false
+    t.text "body", null: false
+    t.boolean "pinned", default: false, null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -30,21 +31,6 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
-  end
-
-  create_table "category_metadata", force: :cascade do |t|
-    t.string "name"
-    t.integer "data_type"
-    t.integer "sort_order"
-    t.string "default"
-    t.boolean "optional", default: false
-    t.jsonb "options"
-    t.text "description"
-    t.bigint "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_category_metadata_on_category_id"
-    t.index ["id", "sort_order"], name: "index_category_metadata_on_id_and_sort_order"
   end
 
   create_table "peers", force: :cascade do |t|
@@ -61,7 +47,7 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.integer "downspeed", default: 0, null: false
     t.integer "timespent", default: 0, null: false
     t.integer "corrupt", default: 0, null: false
-    t.text "useragent", default: "", null: false
+    t.text "user_agent", default: "", null: false
     t.boolean "connectable", default: true, null: false
     t.binary "peer_id", default: "0", null: false
     t.integer "port", null: false
@@ -102,9 +88,12 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.integer "freeleech_type"
     t.integer "snatched"
     t.bigint "balance"
+    t.bigint "category_id"
     t.datetime "last_reseed_request"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_torrents_on_category_id"
+    t.index ["info_hash"], name: "index_torrents_on_info_hash", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -120,6 +109,7 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.inet "last_sign_in_ip"
     t.integer "role", default: 0, null: false
     t.string "username", null: false
+    t.string "torrent_pass", null: false
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -129,14 +119,14 @@ ActiveRecord::Schema.define(version: 20180110195220) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "torrent_pass"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["torrent_pass"], name: "index_users_on_torrent_pass", unique: true
   end
 
   add_foreign_key "announcements", "users"
-  add_foreign_key "category_metadata", "categories"
   add_foreign_key "peers", "torrents"
   add_foreign_key "peers", "users"
   add_foreign_key "torrent_files", "torrents"
+  add_foreign_key "torrents", "categories"
 end

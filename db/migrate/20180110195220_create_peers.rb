@@ -14,7 +14,7 @@ class CreatePeers < ActiveRecord::Migration[5.1]
       t.integer :downspeed, null: false, default: 0
       t.integer :timespent, null: false, default: 0
       t.integer :corrupt, null: false, default: 0
-      t.text :useragent, null: false, default: ""
+      t.text :user_agent, null: false, default: ""
       t.boolean :connectable, null: false, default: true
       t.binary :peer_id, null: false, default: 0x0 * 20
       t.integer :port, null: false

@@ -9,10 +9,12 @@ admin:
   email: admin@example.com
   role: 7
   confirmed_at: <%= Time.now %>
+  torrent_pass: admin_pass
 # column: value
 #
 user:
   username: user
   email: user@example.com
   confirmed_at: <%= Time.now %>
+  torrent_pass: user_pass
 # column: value

@@ -16,6 +16,8 @@ Solr will be fully integrated soon, allowing true full text search of torrents.
 
 Ablation is developed (primarily) and tested with Ruby 2.5.
 
+If you would like to pre-seed an admin password, you can set `ADMIN_PASS`; otherwise, a random password will be generated and presented on seed
+
 ```bash
 bundle install
 bundle exec rails db:create db:schema:load db:seed

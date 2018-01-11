@@ -3,11 +3,5 @@
 <%- end %>
 
 <%= form_tag method: :get do %>
-  <%- @metadata.in_groups_of(3).each do |group| %>
-    <div class="small-6 large-4 columns">
-      <%- group.each do |field| %>
-        <%= field_for field%>
-      <%- end %>
-    </div>
-  <%- end %>
+
 <% end %>
