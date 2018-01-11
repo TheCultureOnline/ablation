@@ -1,4 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
+
+require "test_helper"
 
 class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -21,7 +23,7 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create announcement" do
     sign_in @admin
-    assert_difference('Announcement.count') do
+    assert_difference("Announcement.count") do
       post announcements_url, params: { announcement: { body: @announcement.body, title: @announcement.title, user_id: @admin.id } }
     end
 
@@ -47,7 +49,7 @@ class AnnouncementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy announcement" do
     sign_in @admin
-    assert_difference('Announcement.count', -1) do
+    assert_difference("Announcement.count", -1) do
       delete announcement_url(@announcement)
     end
 

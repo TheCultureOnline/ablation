@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TorrentsController < ApplicationController
   before_action :set_torrent, only: [:show, :edit, :update, :destroy]
 
@@ -17,12 +19,12 @@ class TorrentsController < ApplicationController
       format.json
       format.torrent {
         unless params[:torrent_pass]
-          render plain: "", :status => 400 and return
+          render(plain: "", status: 400) && (return)
         end
         raw = TorrentFile.where(torrent_id: @torrent.id).first
         torrent = BEncode.load(raw.data)
-        torrent['announce'] = "#{Setting.tracker_url}/#{params[:torrent_pass]}/announce"
-        send_data( torrent.bencode, :filename => "#{@torrent.name}.torrent" )
+        torrent["announce"] = "#{Setting.tracker_url}/#{params[:torrent_pass]}/announce"
+        send_data(torrent.bencode, filename: "#{@torrent.name}.torrent")
       }
     end
   end
@@ -47,37 +49,37 @@ class TorrentsController < ApplicationController
     # The following properties do not affect the infohash:
     # anounce-list is an unofficial extension to the protocol
     # that allows for multiple trackers per torrent
-    torrent['info'].delete('announce-list')
+    torrent["info"].delete("announce-list")
     # Bitcomet & Azureus cache peers in here
-    torrent['info'].delete('nodes')
+    torrent["info"].delete("nodes")
     # Azureus stores the dht_backup_enable flag here
-    torrent['info'].delete('azureus_properties')
+    torrent["info"].delete("azureus_properties")
     # Remove web-seeds
-    torrent['info'].delete('url-list')
+    torrent["info"].delete("url-list")
     # Remove libtorrent resume info
-    torrent['info'].delete('libtorrent_resume')
-    torrent['info']['private'] = 1
-  
+    torrent["info"].delete("libtorrent_resume")
+    torrent["info"]["private"] = 1
+
     torrent_file = TorrentFile.create!(torrent: @torrent, data: torrent.bencode)
 
     @torrent = Torrent.new(torrent_params)
-    @torrent.size = torrent['info']['length']
-    @torrent.name = torrent['info']['name']
+    @torrent.size = torrent["info"]["length"]
+    @torrent.name = torrent["info"]["name"]
     @torrent.info_hash = torrent_file.info_hash
     # Setup file lists
-    if torrent['info']['name']
-      @torrent.file_list << torrent['info']['name']
+    if torrent["info"]["name"]
+      @torrent.file_list << torrent["info"]["name"]
     end
-    if torrent['info']['files']
-      torrent['info']['files'].each do |f|
-        @torrent.file_list << f['path']
+    if torrent["info"]["files"]
+      torrent["info"]["files"].each do |f|
+        @torrent.file_list << f["path"]
       end
     end
     @torrent.save
 
     respond_to do |format|
       if @torrent.save
-        format.html { redirect_to @torrent, notice: 'Torrent was successfully created.' }
+        format.html { redirect_to @torrent, notice: "Torrent was successfully created." }
         format.json { render :show, status: :created, location: @torrent }
       else
         format.html { render :new }

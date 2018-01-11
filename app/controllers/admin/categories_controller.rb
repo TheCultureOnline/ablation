@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class Admin::CategoriesController < AdminController
-  
     protected
-  
+
       # Never trust parameters from the scary internet, only allow the white list through.
       def model_params
         params.require(:category).permit(:name, :description)
@@ -13,8 +14,8 @@ class Admin::CategoriesController < AdminController
 
       def model_attributes
         [
-            [:name, {type: "text_field"}],
-            [:description, {type: "text_area"}],
+            [:name, { type: "text_field" }],
+            [:description, { type: "text_area" }],
         ]
       end
 

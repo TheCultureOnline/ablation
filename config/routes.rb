@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :torrents
-  
+
   resources :announcements
   # root to: "devise/sessions#new"
   # user_root to: "announcements#index"
@@ -9,25 +11,25 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     authenticated :user do
-      root 'announcements#index', as: :root
+      root "announcements#index", as: :root
       # get "torrents", as: :torrents
 
       namespace :admin do
-        get '/', to: 'dashboard#index', as: 'dashboard'
+        get "/", to: "dashboard#index", as: "dashboard"
         resources :categories
         resources :users
         resources :torrents
 
-        mount RailsSettingsUi::Engine, at: 'settings'
+        mount RailsSettingsUi::Engine, at: "settings"
       end
     end
-  
+
     unauthenticated do
-      root 'devise/sessions#new', as: :unauthenticated_root
+      root "devise/sessions#new", as: :unauthenticated_root
     end
   end
 
-  get ':torrent_pass/announce', to: 'tracker#announce'
-  get ':torrent_pass/scrape', to: 'tracker#scrape'
+  get ":torrent_pass/announce", to: "tracker#announce"
+  get ":torrent_pass/scrape", to: "tracker#scrape"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

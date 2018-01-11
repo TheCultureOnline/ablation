@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class Admin::UsersController < AdminController
-  
     protected
-  
+
       # Never trust parameters from the scary internet, only allow the white list through.
       def model_params
         params.require(:user).permit(:username, :email, :password)
@@ -13,22 +14,22 @@ class Admin::UsersController < AdminController
 
       def model_attributes
         [
-            [:email, {type: "email"}],
-            [:username, {type: "text_field"}],
+            [:email, { type: "email" }],
+            [:username, { type: "text_field" }],
         ]
       end
 
       def update_attributes
         [
-            [:id, {type: "text_field", readonly: true}],
-            [:created_at, {type: "text_field", readonly: true}],
-            [:updated_at, {type: "text_field", readonly: true}],
+            [:id, { type: "text_field", readonly: true }],
+            [:created_at, { type: "text_field", readonly: true }],
+            [:updated_at, { type: "text_field", readonly: true }],
         ]
       end
 
       def new_attributes
         [
-            [:password, {type: "password"}],
+            [:password, { type: "password" }],
         ]
       end
 

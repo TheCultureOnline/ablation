@@ -23,7 +23,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.integer :role, default: 0, null: false
 
       # Username
-      t.string :username, null: false 
+      t.string :username, null: false
 
       ## Confirmable
       t.string   :confirmation_token

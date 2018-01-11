@@ -1,4 +1,6 @@
-require 'digest'
+# frozen_string_literal: true
+
+require "digest"
 
 class TorrentFile < ApplicationRecord
   belongs_to :torrent
@@ -8,7 +10,7 @@ class TorrentFile < ApplicationRecord
   end
 
   def info_hash
-    info = torrent_data['info'].bencode
+    info = torrent_data["info"].bencode
     hash = Digest::SHA1.hexdigest info
   end
 end

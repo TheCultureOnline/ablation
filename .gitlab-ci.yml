@@ -17,3 +17,7 @@ before_script:
 test:
   script:
     - RAILS_ENV=test bin/rake test
+
+lint:
+  script:
+    - rubdne exec rubocop

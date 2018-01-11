@@ -1,4 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
+
+require "test_helper"
 
 class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -14,9 +16,9 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create user" do
-    assert_difference('User.count') do
+    assert_difference("User.count") do
       sign_in @admin
-      post admin_users_url, params: { user: { email: 'test2@example.com', username: 'test', password: "example" } }
+      post admin_users_url, params: { user: { email: "test2@example.com", username: "test", password: "example" } }
     end
 
     assert_redirected_to admin_user_url(User.last)

@@ -1,5 +1,6 @@
-class User < ApplicationRecord
+# frozen_string_literal: true
 
+class User < ApplicationRecord
   enum role: [:user, :member, :poweruser, :artist, :donor, :elite, :moderator, :admin]
   after_initialize :set_default_role, if: :new_record?
   after_initialize :setup_torrent_pass, if: :new_record?
@@ -15,12 +16,12 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable, :authentication_keys => [:username]
+         :confirmable, :lockable, authentication_keys: [:username]
 
   validates :username,
-         :presence => true,
-         :uniqueness => {
-           :case_sensitive => false
+         presence: true,
+         uniqueness: {
+           case_sensitive: false
          }
 
   def includes?(target_role)

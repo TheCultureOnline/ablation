@@ -1,9 +1,11 @@
-require 'rails-settings-ui'
+# frozen_string_literal: true
+
+require "rails-settings-ui"
 
 #= Application-specific
 #
 # # You can specify a controller for RailsSettingsUi::ApplicationController to inherit from:
-RailsSettingsUi.parent_controller = 'AdminController' # default: '::ApplicationController'
+RailsSettingsUi.parent_controller = "AdminController" # default: '::ApplicationController'
 #
 # # Render RailsSettingsUi inside a custom layout (set to 'application' to use app layout, default is RailsSettingsUi's own layout)
 # RailsSettingsUi::ApplicationController.layout 'admin'
