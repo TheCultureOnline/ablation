@@ -27,9 +27,4 @@ class ApplicationController < ActionController::Base
         ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
       end
     end
-
-    def setup_host
-      Rails.application.routes.default_url_options[:host] =
-        "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}#{Setting.site_port == 80 ? '' : Setting.site_port }"
-    end
 end
