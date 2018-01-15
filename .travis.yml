@@ -25,10 +25,12 @@ rvm:
 # The `script` option is an optional list of the main build task(s). `rake` is
 # the default script option for Travis and most Rails projects will want this
 # when starting out as this usually runs `rake test`.
-stages:
-- test
-- rubocop
-- brakeman
+
+# Can be limited by this, will process in serial
+# stages:
+# - test
+# - rubocop
+# - brakeman
 
 before_install: |
   gem update --system
