@@ -27,10 +27,9 @@ rvm:
 # when starting out as this usually runs `rake test`.
 
 # Can be limited by this, will process in serial
-# stages:
-# - test
-# - rubocop
-# - brakeman
+stages:
+- lints
+- test
 
 before_install: |
   gem update --system
@@ -40,9 +39,8 @@ jobs:
     - script: |
         bundle exec bin/rails db:create db:migrate RAILS_ENV=test
         bundle exec bin/rails test
-    - stage: rubocop
+    - stage: lints
       script: bundle exec rubocop
-    - stage: brakeman
       script: bundle exec brakeman
 
 notifications:
