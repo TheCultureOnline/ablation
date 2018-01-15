@@ -1,7 +1,11 @@
 # config/app.yml for rails-settings-cached
 defaults: &defaults
   tracker_name: "TheCulture.eu"
-  tracker_url: "http://localhost:3000"
+  tracker_hostname: "localhost"
+  tracker_protocol: "http"
+  site_port: 3000
+  tracker_port: 3000
+
   announce_interval: 600
   min_interval: 60
   default_peers: 10

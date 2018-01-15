@@ -35,5 +35,11 @@ en:
     attributes:
       tracker_name: # setting name
         name: 'Tracker Name'
-      tracker_url:
+      tracker_protocol:
+        name: 'Protocol'
+      tracker_hostname:
         name: 'Tracker URL'
+      tracker_port:
+        name: 'Tracker Port'
+      site_port:
+        name: 'Site Port'
