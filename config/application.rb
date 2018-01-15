@@ -24,5 +24,9 @@ module Ablation
         config.dsn = Rails.application.secrets[:sentry_dsn]
       end
     end
+
+    config.action_mailer.default_url_options = {
+      host: lambda { |env| Setting.tracker_hostname },
+    }
   end
 end
