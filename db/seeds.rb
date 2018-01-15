@@ -13,7 +13,6 @@ admin = User.find_or_initialize_by(email: email, username: "admin", role: :admin
   u.password_confirmation = pass
   puts "Admin password is #{pass}"
 end
-admin.save
 admin.confirm
 
 Announcement.create!(
