@@ -63,7 +63,7 @@ gem "skylight"
 gem "sentry-raven"
 
 group :development, :test do
-  gem "dotenv"
+  gem "dotenv-rails"
   gem "pry"
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
