@@ -21,6 +21,5 @@ module Ablation
         config.dsn = Rails.application.secrets[:sentry_dsn]
       end
     end
-    
   end
 end
