@@ -4,9 +4,11 @@
 
 ### Badges
 
-- codeclimate
-- coveralls (github)
-- ci / migrate to travis (github)
+[![Maintainability](https://api.codeclimate.com/v1/badges/62983f95b64552e3da99/maintainability)](https://codeclimate.com/github/TheCultureOnline/ablation/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/62983f95b64552e3da99/test_coverage)](https://codeclimate.com/github/TheCultureOnline/ablation/test_coverage)
+[![Coverage Status](https://coveralls.io/repos/github/TheCultureOnline/ablation/badge.svg?branch=master)](https://coveralls.io/github/TheCultureOnline/ablation?branch=master)
+[![Build Status](https://travis-ci.org/TheCultureOnline/ablation.svg?branch=master)](https://travis-ci.org/TheCultureOnline/ablation)
+
 
 ### Search
 
