@@ -30,6 +30,8 @@ stages:
 - rubocop
 - brakeman
 
+before_install: |
+  gem update --system
 
 jobs:
   include:
