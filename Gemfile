@@ -55,10 +55,15 @@ gem "font-awesome-rails"
 gem "sunspot_rails"
 gem "progress_bar", require: false
 
+# Monitoring
 # gem "newrelic_rpm"
 gem "skylight"
 
+# Catch Errors
+gem "sentry-raven"
+
 group :development, :test do
+  gem "dotenv"
   gem "pry"
   gem "rubocop", require: false
   gem "rubocop-rails", require: false

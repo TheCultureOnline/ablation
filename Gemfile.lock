@@ -78,6 +78,7 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
+    dotenv (2.2.1)
     dry-configurable (0.7.0)
       concurrent-ruby (~> 1.0)
     dry-container (0.6.0)
@@ -234,6 +235,8 @@ GEM
     selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
+    sentry-raven (2.7.1)
+      faraday (>= 0.7.6, < 1.0)
     skylight (1.5.0)
       activesupport (>= 3.0.0)
     spring (2.0.2)
@@ -295,6 +298,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise!
+  dotenv
   font-awesome-rails
   foundation-rails
   jbuilder (~> 2.5)
@@ -313,6 +317,7 @@ DEPENDENCIES
   rubocop-rails
   sass-rails (~> 5.0)
   selenium-webdriver
+  sentry-raven
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
