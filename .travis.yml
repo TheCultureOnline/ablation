@@ -34,6 +34,8 @@ stages:
 before_install: |
   gem update --system
 
+cache: bundler
+
 jobs:
   include:
     - script: |
