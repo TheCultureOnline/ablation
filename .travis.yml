@@ -34,8 +34,8 @@ stages:
 jobs:
   include:
     - script: |
-        bin/rails db:migrate RAILS_ENV=test
-        bin/rails test
+        bundle exec bin/rails db:migrate RAILS_ENV=test
+        bundle exec bin/rails test
     - stage: rubocop
       script: bundle exec rubocop
     - stage: brakeman
