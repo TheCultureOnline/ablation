@@ -37,30 +37,30 @@ class InfoHash
   end
 
   private
-  def peers(how_many_peers)
-    Peer
-        .limit(how_many_peers)
-        .where(torrent_id: @torrent.id)
-        .where(active: true)
-  end
+    def peers(how_many_peers)
+      Peer
+          .limit(how_many_peers)
+          .where(torrent_id: @torrent.id)
+          .where(active: true)
+    end
 
-  def peer_list(compact, how_many_peers, peer_id=nil)
-    list = peers(how_many_peers).map do |peer|
-      if compact
-        [peer.ip.to_i, peer.port.to_i].pack("Nn")
-      else
-        {
-          ip: peer.ip,
-          port: peer.port,
-        }.tap do |data|
-          data[:peer_id] = peer_id if peer_id
+    def peer_list(compact, how_many_peers, peer_id = nil)
+      list = peers(how_many_peers).map do |peer|
+        if compact
+          [peer.ip.to_i, peer.port.to_i].pack("Nn")
+        else
+          {
+            ip: peer.ip,
+            port: peer.port,
+          }.tap do |data|
+            data[:peer_id] = peer_id if peer_id
+          end
         end
       end
+      if compact
+        list.join
+      else
+        list
+      end
     end
-    if compact
-      list.join
-    else
-      list
-    end
-  end
 end
