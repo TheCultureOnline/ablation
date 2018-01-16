@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 class Admin::UsersController < AdminController
+  # PATCH/PUT /#{model}/1
+  # PATCH/PUT /#{model}/1.json
+  def update
+    respond_to do |format|
+      if @model.update(model_params)
+        # binding.pry
+        if @model == current_user
+          bypass_sign_in @model
+        end
+        format.html { redirect_to [:admin, @model], notice: "#{current_model.to_s} was successfully updated." }
+        format.json { render :show, status: :ok, location: @model }
+      else
+        format.html { render :edit }
+        format.json { render json: @model.errors, status: :unprocessable_entity }
+      end
+    end
+  end
     protected
 
       # Never trust parameters from the scary internet, only allow the white list through.
@@ -14,8 +31,9 @@ class Admin::UsersController < AdminController
 
       def model_attributes
         [
-            [:email, { type: "email" }],
+            [:email, { type: "email_field" }],
             [:username, { type: "text_field" }],
+            [:password, { type: "password_field" }]
         ]
       end
 
