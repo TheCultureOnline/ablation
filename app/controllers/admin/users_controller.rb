@@ -42,12 +42,6 @@ class Admin::UsersController < AdminController
         ]
       end
 
-      def new_attributes
-        [
-            [:password, { type: "password" }],
-        ]
-      end
-
       def nav_links
         [
             ["List", [:admin, :users]],

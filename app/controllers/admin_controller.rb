@@ -31,7 +31,7 @@ class AdminController < ApplicationController
     @model = current_model.new(model_params)
 
     respond_to do |format|
-      respond_to @model.save
+      respond_to_saved format, @model.save
     end
   end
 
@@ -39,7 +39,7 @@ class AdminController < ApplicationController
   # PATCH/PUT /#{model}/1.json
   def update
     respond_to do |format|
-      respond_to_saved @model.update(model_params)
+      respond_to_saved format, @model.update(model_params)
     end
   end
 
@@ -55,14 +55,14 @@ class AdminController < ApplicationController
 
     private
 
-      def respond_to_saved(saved)
+      def respond_to_saved(format, saved)
         if saved
-        format.html { redirect_to [:admin, @model], notice: "#{current_model.to_s} was successfully updated." }
-        format.json { render :show, status: :ok, location: @model }
-      else
-        format.html { render :edit }
-        format.json { render json: @model.errors, status: :unprocessable_entity }
-      end
+          format.html { redirect_to [:admin, @model], notice: "#{current_model.to_s} was successfully updated." }
+          format.json { render :show, status: :ok, location: @model }
+        else
+          format.html { render :edit }
+          format.json { render json: @model.errors, status: :unprocessable_entity }
+        end
       end
 
       def nav_links
