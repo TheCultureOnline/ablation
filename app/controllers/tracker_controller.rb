@@ -9,7 +9,7 @@ class TrackerController < ApplicationController
   def announce
     hash = params[:info_hash].unpack("H*").first
     torrent = Torrent.where(info_hash: hash).first
-    info_hash = InfoHash.new(hash, torrent)
+    info_hash = InfoHash.new(torrent)
     event! @user, torrent
     announce = info_hash.announce(
       params[:compact].to_i == 1,

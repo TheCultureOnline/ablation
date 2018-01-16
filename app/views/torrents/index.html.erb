@@ -37,7 +37,14 @@
             <%- end %>
           </td>
           <td><%= number_to_human_size release.torrents.maximum(:size) %> (MAX)</td>
-          <td><%= time_ago_in_words release.torrents.maximum(:updated_at) %></td>
+          <%- updated_at = release.torrents.maximum(:updated_at) %>
+          <td>
+            <%- if updated_at %>
+              <%= time_ago_in_words updated_at %>
+            <%- else %>
+              Never
+            <%- end %>
+          </td>
           <td><%= release.torrents.sum(:snatched) %></td>
           <td><%= release.torrents.sum(:seeders) %></td>
           <td><%= release.torrents.sum(:leechers) %></td>

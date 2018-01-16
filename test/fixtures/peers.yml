@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  torrent: one
   user: one
   ip: 10.0.0.1
   active: true
@@ -15,9 +16,10 @@ one:
   user_agent: MyText
   connectable: true
   peer_id: test-123
-  port: 1
+  port: 12345
 
 two:
+  torrent: one
   user: two
   ip: 10.0.0.2
   active: false
@@ -32,4 +34,4 @@ two:
   user_agent: MyText
   connectable: true
   peer_id: test-321
-  port: 1
+  port: 12345
