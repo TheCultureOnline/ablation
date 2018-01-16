@@ -6,10 +6,7 @@ class Admin::UsersController < AdminController
   def update
     respond_to do |format|
       if @model.update(model_params)
-        # binding.pry
-        if @model == current_user
-          bypass_sign_in @model
-        end
+        bypass_sign_in @model if @model == current_user
         format.html { redirect_to [:admin, @model], notice: "#{current_model.to_s} was successfully updated." }
         format.json { render :show, status: :ok, location: @model }
       else
