@@ -41,5 +41,9 @@ en:
         name: 'Tracker URL'
       tracker_port:
         name: 'Tracker Port'
+      site_protocol:
+        name: 'Site Protocol'
+      site_hostname:
+        name: 'Site Hostname'
       site_port:
         name: 'Site Port'

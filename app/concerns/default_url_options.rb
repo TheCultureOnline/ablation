@@ -14,7 +14,7 @@ private
 
   def host
     # Your logic for figuring out what the hostname should be
-    Setting.tracker_hostname
+    Setting.site_hostname
   end
 
   def port
