@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 pass = ENV["ADMIN_PASS"] || SecureRandom.hex(16)
-email = ENV["ADMIN_EMAIL"] || "admin_localhost"
+email = ENV["ADMIN_EMAIL"] || "admin@localhost"
 admin = User.find_or_initialize_by(email: email, username: "admin", role: :admin) do |u|
   u.password = pass
   u.password_confirmation = pass
