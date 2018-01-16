@@ -8,7 +8,7 @@ defaults: &defaults
   site_protocol: "http"
   site_port: 3000
   from_email: "please-change-me-at-config-initializers-devise@example.com"
-
+  open_registration: true
   announce_interval: 600
   min_interval: 60
   default_peers: 10

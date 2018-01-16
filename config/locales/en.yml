@@ -47,3 +47,5 @@ en:
         name: 'Site Hostname'
       site_port:
         name: 'Site Port'
+      open_registration:
+        name: "Open Registration"
