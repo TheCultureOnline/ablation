@@ -39,7 +39,7 @@ class TorrentsController < ApplicationController
         end
         raw = TorrentFile.where(torrent_id: @torrent.id).first
         torrent = BEncode.load(raw.data)
-        torrent["announce"] = "#{Setting.tracker_url}/#{params[:torrent_pass]}/announce"
+        torrent["announce"] = "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}:#{Setting.tracker_port }/#{params[:torrent_pass]}/announce"
         send_data(torrent.bencode, filename: "#{@torrent.name}.torrent")
       }
     end
