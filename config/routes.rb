@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # root to: "devise/sessions#new"
   # user_root to: "announcements#index"
 
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users, controllers: { registrations: "registrations" }
 
   resources :torrents
 
