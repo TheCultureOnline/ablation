@@ -3,44 +3,46 @@
 require "bencode"
 
 class TrackerController < ApplicationController
+  before_action :set_user
+  before_action :validate_announce, only: :announce
+
   def announce
-    failure("invalid torrent_pass specified") && (return) if @user.nil?
-    failure("info_hash is missing") && (return) if params["info_hash"].nil?
-    failure("peer_id is missing") && (return) if params["peer_id"].nil?
-    failure("port is missing") && (return) if params["port"].nil?
-    failure("invalid info_hash") && (return) if params["info_hash"].bytesize != 20
-    failure("invalid peer_id") && (return) if params["peer_id"].bytesize != 20
     hash = params[:info_hash].unpack("H*").first
-
     torrent = Torrent.where(info_hash: hash).first
-
-    info_hash = InfoHash.new(hash, torrent)
+    info_hash = InfoHash.new(torrent)
     event! @user, torrent
     announce = info_hash.announce(
       params[:compact].to_i == 1,
         params[:no_peer_id].to_i == 1,
         (params[:numwant] || Setting.default_peers).to_i
     )
-    puts "announce: #{announce}"
     render plain: announce.bencode
   end
 
   def scrape
-    failure("invalid torrent_pass specified") && (return) if @user.nil?
-    #     content_type 'text/plain'
     if params[:info_hash]
-      failure "invalid info_hash" if params[:info_hash].bytesize != 20
+      failure("invalid info_hash") && return if params[:info_hash].bytesize != 20
       hash = params[:info_hash].unpack("H*").first
       result = InfoHash.new(hash, Torrent.where(info_hash: hash).first).scrape
-      puts "scrape result: #{result}"
       render plain: result.bencode
     else
-      failure "no info_hash"
-      #   InfoHash.scrape.bencode
+      failure("no info_hash")
+      # Could return information on _all_ torrents?
     end
   end
 
     protected
+      def set_user
+        failure("invalid torrent_pass specified") && (return) if @user.nil?
+      end
+
+      def validate_announce
+        failure("info_hash is missing") && (return) if params[:info_hash].nil?
+        failure("peer_id is missing") && (return) if params[:peer_id].nil?
+        failure("port is missing") && (return) if params[:port].nil?
+        failure("invalid info_hash") && (return) if params[:info_hash].bytesize != 20
+        failure("invalid peer_id") && (return) if params[:peer_id].bytesize != 20
+      end
 
       def failure(code = 400, reason)
         render plain: { "failure reason" => reason }.bencode, status: code
