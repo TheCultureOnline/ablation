@@ -81,3 +81,9 @@ TorrentMetadatum.create!(
   name: "version",
   value: "14.04.5"
 )
+
+SearchField.find_or_create_by!(
+  name: 'year',
+  kind: SearchField::kinds[:number_field_tag],
+  sort_order: 0,
+)

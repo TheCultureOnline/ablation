@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: Release 1
   year: 1
   description: MyText
   category: movies
 
 two:
-  name: MyString
+  name: Release 2
   year: 1
   description: MyText
   category: movies

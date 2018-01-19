@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyText
+  title: MyText
+  kind: 1
+  options: 
+  sort_order: 1
+  misc: 
+
+two:
+  name: MyText
+  title: MyText
+  kind: 1
+  options: 
+  sort_order: 1
+  misc: 

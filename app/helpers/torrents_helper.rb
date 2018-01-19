@@ -15,4 +15,8 @@ module TorrentsHelper
                            end
     end
   end
+
+  def search_params
+    SearchField.pluck(:name).map(&:to_sym).push(:name)
+  end
 end

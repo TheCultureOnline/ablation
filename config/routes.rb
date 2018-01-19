@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :users
     resources :releases
     resources :torrents
+    resources :search_fields
 
 
     mount RailsSettingsUi::Engine, at: "settings"
