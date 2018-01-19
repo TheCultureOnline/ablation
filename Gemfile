@@ -57,10 +57,10 @@ gem "progress_bar", require: false
 
 # Monitoring
 # gem "newrelic_rpm"
-gem "skylight"
+gem "skylight", group: :production
 
 # Catch Errors
-gem "sentry-raven"
+gem "sentry-raven", group: :production
 
 group :development, :test do
   gem "dotenv-rails"
@@ -74,6 +74,7 @@ group :development, :test do
   gem "capybara", "~> 2.13"
   gem "selenium-webdriver"
   gem "coveralls", require: false
+  gem "rails-controller-testing"
 end
 
 group :development do

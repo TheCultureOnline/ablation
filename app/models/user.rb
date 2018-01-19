@@ -4,6 +4,7 @@ class User < ApplicationRecord
   enum role: [:user, :member, :poweruser, :artist, :donor, :elite, :moderator, :admin]
   after_initialize :set_default_role, if: :new_record?
   after_initialize :setup_torrent_pass, if: :new_record?
+
   def set_default_role
     self.role ||= :user
   end

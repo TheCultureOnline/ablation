@@ -3,12 +3,32 @@
 <%- end %>
 <div class="row">
   <%= form_tag '', method: :get do %>
-      <div class="field">
+      <%- if params[:advanced] %>
+        <% p = params.permit(search_params) %>
+        <% p.delete(:advanced) %>
+        <%= link_to "Basic", torrents_path(p) %>
+      <%- else %>
+        <%= link_to "Advanced", torrents_path(params.permit(search_params).merge({advanced: true}))%>
+      <%- end %>
+      <div class="field row">
         <%= text_field_tag :name, params[:name], placeholder: "Name" %>
       </div>
-      <div class="field">
-        <%= number_field_tag :year, params[:year], placeholder: "Year" %>
+      <div class="field row">
+        <%= select_tag :category, options_from_collection_for_select(Category.all, :id, :name, (params[:category].nil? ? nil : params[:category].to_i)), include_blank: true %>
       </div>
+      <%- if params[:advanced] %>
+
+        <%- SearchField.order(sort_order: :asc).in_groups(3).each do |group| %>
+          <div class="row">
+            <%- group.each do |f| %>
+              <%- next if f.nil? %>
+              <div class="field small-4">
+                <%= send f.kind, f.title || f.name, params[f.title || f.name], placeholder: (f.title || f.name).titlecase %>
+              </div>  
+            <%- end %>
+          </div>
+        <%- end %>
+      <%- end %>
 
       <div class="actions">
         <%= submit_tag "Filter" %>

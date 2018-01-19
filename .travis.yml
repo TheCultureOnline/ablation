@@ -36,10 +36,13 @@ before_install: |
 
 cache: bundler
 
+addons:
+  postgresql: 9.6
+
 jobs:
   include:
     - script: |
-        bundle exec bin/rails db:create db:schema:load RAILS_ENV=test
+        bundle exec bin/rails db:create db:migrate RAILS_ENV=test
         bundle exec bin/rails test
     - stage: lints
       script: bundle exec rubocop

@@ -15,7 +15,7 @@ class Torrent < ApplicationRecord
       size: torrent_file.length,
       name: torrent_file.name,
       info_hash: torrent_file.info_hash,
-      release: release,
+      release_id: release.id,
     )
     # Setup file lists
     if torrent_file.name
