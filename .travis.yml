@@ -36,6 +36,9 @@ before_install: |
 
 cache: bundler
 
+addons:
+  postgresql: 9.6
+
 jobs:
   include:
     - script: |
