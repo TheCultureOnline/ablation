@@ -18,8 +18,8 @@ class TorrentsController < ApplicationController
     #   with(:category_id, params[:category_id]) if params[:category_id]
     # end.results
     @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).includes(:torrents)
-    @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name] }%") if params[:name]
-    @releases = @releases.where(year: params[:year]) if params[:year]
+    @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name].gsub(/\W/, '%') }%") if params[:name]
+    @releases = @releases.where(year: params[:year]) if params[:year].present?
   end
 
   # GET /torrents/1
