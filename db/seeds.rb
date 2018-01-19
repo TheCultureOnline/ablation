@@ -83,7 +83,7 @@ TorrentMetadatum.create!(
 )
 
 SearchField.find_or_create_by!(
-  name: 'year',
+  name: "year",
   kind: SearchField::kinds[:number_field_tag],
   sort_order: 0,
 )

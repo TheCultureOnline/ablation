@@ -34,7 +34,7 @@ class TorrentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should find with search" do
     sign_in @user
-    get torrents_url({name: "2"})
+    get torrents_url(name: "2")
     assert_response :success
     assert_equal assigns(:releases).first, Release.where(name: "Release 2").first
   end
