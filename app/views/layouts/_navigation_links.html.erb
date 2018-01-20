@@ -7,6 +7,6 @@
 
 <!-- Coming Soon! -->
 <%- %w( Collages Requests Forums IRC Top 10 Rules Wiki Staff ).each do |name| %>
-    <li><%= link_to(name, "\##{name.downcase}_path") %> </li>
+    <li><%- link_to(name, "\##{name.downcase}_path") %> </li>
     <%# send(:"#{name.downcase}_path")) %>
 <% end %>
