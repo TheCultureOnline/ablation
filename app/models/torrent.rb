@@ -27,9 +27,9 @@ class Torrent < ApplicationRecord
       end
     end
     torrent.file_count = torrent.file_list.length
-    torrent = Torrent.find_or_create_by!(torrent.attributes.delete_if{|k, v| v.blank?})
+    torrent = Torrent.find_or_create_by!(torrent.attributes.delete_if { |k, v| v.blank? })
     torrent_file.torrent = torrent
-    TorrentFile.find_or_create_by!(torrent_file.attributes.delete_if{|k, v| v.blank?})
+    TorrentFile.find_or_create_by!(torrent_file.attributes.delete_if { |k, v| v.blank? })
     torrent
   end
 end
