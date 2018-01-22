@@ -38,12 +38,12 @@ torrent = Torrent.from_file(
   Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-i386.iso.torrent"),
   release
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "arch",
   value: "x86"
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "version",
   value: "16.04.3"
@@ -55,12 +55,12 @@ torrent = Torrent.from_file(
   Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-amd64.iso.torrent"),
   release
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "arch",
   value: "x86_64"
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "version",
   value: "16.04.3"
@@ -71,12 +71,12 @@ torrent = Torrent.from_file(
   Rails.root.join("db", "files", "software", "ubuntu-14.04.5-desktop-amd64.iso.torrent"),
   release
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "arch",
   value: "x86_64"
 )
-TorrentMetadatum.create!(
+TorrentMetadatum.find_or_create_by!(
   torrent: torrent,
   name: "version",
   value: "14.04.5"
