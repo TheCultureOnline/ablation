@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyText
+  field_type: 1
+  metadata_for: 1
+  category: one
+  options:
+
+two:
+  name: MyText
+  field_type: 1
+  metadata_for: 1
+  category: two
+  options: 

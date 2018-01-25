@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180119185201) do
+ActiveRecord::Schema.define(version: 20180125185043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 20180119185201) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
+  create_table "category_metadata_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "field_type", null: false
+    t.integer "metadata_for", null: false
+    t.bigint "category_id"
+    t.text "options", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_category_metadata_types_on_category_id"
   end
 
   create_table "peers", force: :cascade do |t|
@@ -55,6 +66,15 @@ ActiveRecord::Schema.define(version: 20180119185201) do
     t.datetime "updated_at", null: false
     t.index ["torrent_id"], name: "index_peers_on_torrent_id"
     t.index ["user_id"], name: "index_peers_on_user_id"
+  end
+
+  create_table "release_metadata", force: :cascade do |t|
+    t.bigint "release_id"
+    t.string "name"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["release_id"], name: "index_release_metadata_on_release_id"
   end
 
   create_table "releases", force: :cascade do |t|
@@ -155,8 +175,10 @@ ActiveRecord::Schema.define(version: 20180119185201) do
   end
 
   add_foreign_key "announcements", "users"
+  add_foreign_key "category_metadata_types", "categories"
   add_foreign_key "peers", "torrents"
   add_foreign_key "peers", "users"
+  add_foreign_key "release_metadata", "releases"
   add_foreign_key "releases", "categories"
   add_foreign_key "torrent_files", "torrents"
   add_foreign_key "torrent_metadata", "torrents"
