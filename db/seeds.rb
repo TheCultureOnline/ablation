@@ -15,7 +15,7 @@ admin = User.find_or_initialize_by(email: email, username: "admin", role: :admin
 end
 admin.confirm
 
-Announcement.create!(
+Announcement.find_or_create_by!(
   user: admin,
   title: "Welcome to the new Bittorrent tracker!",
   body: "This is a new Bittorrent tracker based on Ablation, a generic, open sourced tracker suite.",
@@ -98,17 +98,18 @@ begin
     )
   end
 
-  ["arch"].each do |t|
+  [["arch", ["x86", "x84_64", "ARM"]],].each do |t, options|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:software],
       name: t,
-      field_type: CategoryMetadataType.field_types[:text_field],
-      metadata_for: CategoryMetadataType.metadata_fors[:torrent]
+      field_type: CategoryMetadataType.field_types[:select_field],
+      metadata_for: CategoryMetadataType.metadata_fors[:torrent],
+      options: options
     )
   end
 
   u1604 = Release.find_or_create_by(
-    name: "Ubuntu Desktop",
+    name: "Ubuntu 16.4.3 Desktop",
     category_id:  categories[:software].id,
   )
 
@@ -149,7 +150,7 @@ begin
   )
 
   u1404 = Release.find_or_create_by(
-    name: "Ubuntu Desktop",
+    name: "Ubuntu 14.04.3 Desktop",
     category_id:  categories[:software].id,
   )
 
