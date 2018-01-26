@@ -1,0 +1,36 @@
+<%- model_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
+  </p>
+<%- end %>
+<%- update_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
+  </p>
+<%- end %>
+
+<%= link_to "edit metadata", admin_torrent_torrent_metadata_path(@model)%>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>value</th>
+    </tr>
+<%- @model.torrent_metadata.each do |metadata| %>
+    <tr>
+        <td><%= metadata.name %></td>
+        <td><%= metadata.value %></td>
+    </tr>
+<%- end %>
+</table>
+<%= link_to 'Edit', send("edit_admin_#{current_model.to_s.underscore}_path", @model) %> |
+<%= link_to 'Back', [:admin, current_model] %>

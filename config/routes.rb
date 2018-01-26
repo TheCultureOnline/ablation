@@ -24,8 +24,12 @@ Rails.application.routes.draw do
       resources :category_metadata_types
     end
     resources :users
-    resources :releases
-    resources :torrents
+    resources :releases do
+      resources :release_metadata
+    end
+    resources :torrents do
+      resources :torrent_metadata
+    end
     resources :search_fields
 
 

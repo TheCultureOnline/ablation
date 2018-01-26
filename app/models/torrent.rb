@@ -4,6 +4,7 @@ class Torrent < ApplicationRecord
   has_one :torrent_file, dependent: :destroy
   has_many :peers
   belongs_to :release
+  delegate :category, to: :release
   has_many :torrent_metadata, dependent: :destroy
 
   enum freeleech_type: []

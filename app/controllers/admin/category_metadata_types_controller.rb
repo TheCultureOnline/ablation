@@ -42,17 +42,14 @@ class Admin::CategoryMetadataTypesController < AdminController
     end
 
     def show_path_parts model
-        # admin_category_category_metadata_type_path(model.category, model)
         [:admin, @category, model]
     end
 
     def edit_path_parts model
-        # edit_admin_category_category_metadata_type_path(model.category, model)
         [:edit, :admin, @category, model]
     end
 
     def new_path_parts
-        # new_admin_category_category_metadata_type_path(category: @category)
         [:new, :admin, @category, current_model.to_s.underscore]
     end
 end
