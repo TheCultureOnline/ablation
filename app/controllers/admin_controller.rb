@@ -65,16 +65,16 @@ class AdminController < ApplicationController
         end
       end
 
-      def show_path_parts model
+      def show_path_parts(model)
         [:admin, model]
       end
       helper_method :show_path_parts
 
-      def edit_path_parts model
+      def edit_path_parts(model)
         [:edit, :admin, model]
       end
       helper_method :edit_path_parts
-      
+
       def new_path_parts
         [:new, :admin, current_model.to_s.underscore]
       end
