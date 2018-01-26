@@ -1,0 +1,40 @@
+<%- model_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
+  </p>
+<%- end %>
+<%- update_attributes.each do |attr| %>
+  <p>
+    <strong><%= attr[0] %></strong>
+    <%- if attr[1][:formatter] %>
+      <%= send(attr[1][:formatter], @model.send(attr[0])) %>
+    <%- else %>
+      <%= @model.send(attr[0]) %>
+    <%- end %>
+  </p>
+<%- end %>
+
+<%= link_to "edit metadata", admin_category_category_metadata_types_path(@model)%>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Field Type</th>
+        <th>Metadata For</th>
+        <th>Options</th>
+    </tr>
+<%- @model.category_metadata_types.each do |metadata| %>
+    <tr>
+        <td><%= metadata.name %></td>
+        <td><%= metadata.field_type %></td>
+        <td><%= metadata.metadata_for %></td>
+        <td><%= metadata.options %></td>
+    </tr>
+<%- end %>
+</table>
+<%= link_to 'Edit', send("edit_admin_#{current_model.to_s.underscore}_path", @model) %> |
+<%= link_to 'Back', [:admin, current_model] %>

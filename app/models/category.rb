@@ -2,6 +2,8 @@
 
 class Category < ApplicationRecord
   has_many :releases, dependent: :destroy
+  has_many :category_metadata_types, dependent: :destroy
+  has_many :search_fields, dependent: :destroy
   def music?
     name == "Music"
   end

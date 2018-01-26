@@ -1,0 +1,29 @@
+<%= form_with(model: show_path_parts(model), local: true, namespace: 'admin') do |form| %>
+  <% if model.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(model.errors.count, "error") %> prohibited this <%= current_model.to_s %> from being saved:</h2>
+
+      <ul>
+      <% model.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <div class="field">
+        <%= form.label(:name) %>
+        <%= form.select(:name, options_from_collection_for_select(CategoryMetadataType.where(metadata_for: :torrent, category: @torrent.category), :name, :name), {include_blank: "Select a type"}, onchange: "update_value();", id: "metadata_type") %>
+    </div>
+    <div class="field">
+        <div id="value"></div>
+    </div>
+  <div class="actions">
+    <%= form.submit "Save", class: "button" %>
+  </div>
+<% end %>
+
+<%- content_for :scripts do %>
+<script type="text/javascript">
+    var types = <%= CategoryMetadataType.all.map{|t| [t.name, {type: t.field_type, options: t.options}.reject{|k,v| v.nil?}] }.to_h.to_json.html_safe %>;
+</script>
+<%- end %>

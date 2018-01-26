@@ -29,7 +29,7 @@
         <%= form.label :name %>
       </div>
       <div class="small-9 columns">
-        <%= form.text_field :name, value: @release.nil? ? nil : @release.name %>
+        <%= form.text_field :name, value: @release.nil? ? nil : @release.name, disabled: @release.present? %>
       </div>
     </div>
   </div>

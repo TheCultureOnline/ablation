@@ -8,7 +8,7 @@ class AdminController < ApplicationController
   # GET /#{model}
   # GET /#{model}.json
   def index
-    @models = current_model.all
+    @models = current_model.page(params[:page].present? ? params[:page].to_i : 1).per_page(25)
   end
 
   # GET /#{model}/1
@@ -48,7 +48,7 @@ class AdminController < ApplicationController
   def destroy
     @model.destroy
     respond_to do |format|
-      format.html { redirect_to [:admin, current_model], notice: "User was successfully destroyed." }
+      format.html { redirect_to show_path_parts(current_model), notice: "User was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -57,13 +57,28 @@ class AdminController < ApplicationController
 
       def respond_to_saved(format, saved)
         if saved
-          format.html { redirect_to [:admin, @model], notice: "#{current_model.to_s} was successfully updated." }
+          format.html { redirect_to show_path_parts(@model), notice: "#{current_model.to_s} was successfully updated." }
           format.json { render :show, status: :ok, location: @model }
         else
           format.html { render :edit }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
+
+      def show_path_parts(model)
+        [:admin, model]
+      end
+      helper_method :show_path_parts
+
+      def edit_path_parts(model)
+        [:edit, :admin, model]
+      end
+      helper_method :edit_path_parts
+
+      def new_path_parts
+        [:new, :admin, current_model.to_s.underscore]
+      end
+      helper_method :new_path_parts
 
       def nav_links
         []

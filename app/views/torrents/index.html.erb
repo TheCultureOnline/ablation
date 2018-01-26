@@ -7,6 +7,7 @@
         <% p = params.permit(search_params) %>
         <% p.delete(:advanced) %>
         <%= link_to "Basic", torrents_path(p) %>
+        <%= hidden_field_tag :advanced, true%>
       <%- else %>
         <%= link_to "Advanced", torrents_path(params.permit(search_params).merge({advanced: true}))%>
       <%- end %>
@@ -14,16 +15,25 @@
         <%= text_field_tag :name, params[:name], placeholder: "Name" %>
       </div>
       <div class="field row">
-        <%= select_tag :category, options_from_collection_for_select(Category.all, :id, :name, (params[:category].nil? ? nil : params[:category].to_i)), include_blank: true %>
+        <%= select_tag :category, options_from_collection_for_select(Category.all, :id, :name, (params[:category].nil? ? nil : params[:category].to_i)), include_blank: "Select a category", onclick: "select_category" %>
       </div>
       <%- if params[:advanced] %>
 
-        <%- SearchField.order(sort_order: :asc).in_groups(3).each do |group| %>
+        <%- SearchField.order(sort_order: :asc).includes(:category).in_groups(3).each do |group| %>
           <div class="row">
             <%- group.each do |f| %>
               <%- next if f.nil? %>
-              <div class="field small-4">
-                <%= send f.kind, f.title || f.name, params[f.title || f.name], placeholder: (f.title || f.name).titlecase %>
+              <div class="field small-4<%- f.category_id.nil? ? "" : " #{f.category.name}" %>">
+                <%- if f.kind == "check_box_tag" %>
+                  <div class="row">
+                    <div class="field small-8"><%= label_tag f.title || f.name %></div>
+                    <div class="field small-4"><%= send f.kind, f.title || f.name, params[f.name] == "true" ? "true" : "false", params[f.name] == "true" %></div>
+                  </div>
+                <%- elsif f.kind == "select_tag" %>
+                  <%= send f.kind, f.title || f.name, options_for_select(f.options, params[f.name]), include_blank: "Select #{f.title || f.name }" %>
+                <% else %>
+                  <%= send f.kind, f.title || f.name, params[f.title || f.name], placeholder: (f.title || f.name).titlecase %>
+                <%- end %>
               </div>  
             <%- end %>
           </div>
@@ -56,8 +66,8 @@
               [<%= release.year %>]
             <%- end %>
           </td>
-          <td><%= number_to_human_size release.torrents.maximum(:size) %> (MAX)</td>
-          <%- updated_at = release.torrents.maximum(:updated_at) %>
+          <td><%= number_to_human_size release.stats[:size] %> (MAX)</td>
+          <%- updated_at = release.stats[:updated] %>
           <td>
             <%- if updated_at %>
               <%= time_ago_in_words updated_at %>
@@ -65,9 +75,9 @@
               Never
             <%- end %>
           </td>
-          <td><%= release.torrents.sum(:snatched) %></td>
-          <td><%= release.torrents.sum(:seeders) %></td>
-          <td><%= release.torrents.sum(:leechers) %></td>
+          <td><%= release.stats[:snatched] %></td>
+          <td><%= release.stats[:seeders] %></td>
+          <td><%= release.stats[:leechers] %></td>
         </tr>
         <%- release.torrents.each do |torrent| %>
           <tr>

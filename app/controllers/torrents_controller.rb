@@ -17,10 +17,25 @@ class TorrentsController < ApplicationController
     #   end
     #   with(:category_id, params[:category_id]) if params[:category_id]
     # end.results
-    @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).includes(:torrents)
+    puts params
+    @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).order(:updated_at)
     @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name].gsub(/\W/, '%') }%") if params[:name].present?
-    @releases = @releases.where(year: params[:year]) if params[:year].present?
     @releases = @releases.where(category: params[:category]) if params[:category].present?
+    category =  params[:category].present? ? params[:category] : nil
+    possible_fields = params.permit(SearchField.pluck(:name)).to_hash
+    fields = SearchField.where(name: possible_fields.map { |name, value| name if value.present? }.compact, category: [nil, category].uniq)
+    torrent_metadata = TorrentMetadatum.select(:torrent_id)
+    have_torrent_metadata = false
+    fields.each do |field|
+      if ["release", "all"].include? field.search_type
+        @releases = @releases.where(id: ReleaseMetadatum.select(:release_id).where(name: field.name, value: params[field.name]))
+      end
+      if ["torrent", "all"].include? field.search_type
+        torrent_metadata = torrent_metadata.where(name: field.name, value: params[field.name])
+        have_torrent_metadata = true
+      end
+    end
+    @releases = @releases.where(id: Torrent.select(:release_id).where(id: torrent_metadata)).includes(:torrents).where(torrents: { id: torrent_metadata }) if have_torrent_metadata
   end
 
   # GET /torrents/1

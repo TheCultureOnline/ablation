@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, model], local: true, namespace: 'admin') do |form| %>
+<%= form_with(model: show_path_parts(model), local: true, namespace: 'admin') do |form| %>
   <% if model.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(model.errors.count, "error") %> prohibited this <%= current_model.to_s %> from being saved:</h2>

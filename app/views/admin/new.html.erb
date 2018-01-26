@@ -2,4 +2,4 @@
 
 <%= render 'form', model: @model %>
 
-<%= link_to 'Back',  [:admin, current_model]%>
+<%= link_to 'Back', show_path_parts(current_model) %>

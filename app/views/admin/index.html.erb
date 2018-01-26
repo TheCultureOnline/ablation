@@ -34,9 +34,9 @@
           <%- end %>
           </td>
         <%- end %>
-        <td><%= link_to 'Show', [:admin, model] %></td>
-        <td><%= link_to 'Edit', [:edit, :admin, model] %></td>
-        <td><%= link_to 'Destroy', [:admin, model], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', show_path_parts(model) %></td>
+        <td><%= link_to 'Edit', edit_path_parts(model) %></td>
+        <td><%= link_to 'Destroy', show_path_parts(model), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -44,4 +44,4 @@
 
 <br>
 
-<%= link_to "New #{current_model.to_s}", [:new, :admin, current_model.to_s.underscore] %>
+<%= link_to "New #{current_model.to_s}", new_path_parts %>
