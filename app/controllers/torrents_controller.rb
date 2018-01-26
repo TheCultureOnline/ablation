@@ -25,17 +25,17 @@ class TorrentsController < ApplicationController
     possible_fields = params.permit(SearchField.pluck(:name)).to_hash
     fields = SearchField.where(name: possible_fields.map { |name, value| name if value.present? }.compact, category: [nil, category].uniq)
     torrent_metadata = TorrentMetadatum.select(:torrent_id)
+    have_torrent_metadata = false
     fields.each do |field|
       if ["release", "all"].include? field.search_type
         @releases = @releases.where(id: ReleaseMetadatum.select(:release_id).where(name: field.name, value: params[field.name]))
       end
       if ["torrent", "all"].include? field.search_type
-        # @releases = @releases.where(id: Torrent.select(:release_id).where(id: TorrentMetadatum.select(:torrent_id).where(name: field.name, value: params[field.name]) ))
         torrent_metadata = torrent_metadata.where(name: field.name, value: params[field.name])
+        have_torrent_metadata = true
       end
     end
-    @releases = @releases.where(id: Torrent.select(:release_id).where(id: torrent_metadata)).includes(:torrents).where(torrents: { id: torrent_metadata })
-    # binding.pry
+    @releases = @releases.where(id: Torrent.select(:release_id).where(id: torrent_metadata)).includes(:torrents).where(torrents: { id: torrent_metadata }) if have_torrent_metadata
   end
 
   # GET /torrents/1
