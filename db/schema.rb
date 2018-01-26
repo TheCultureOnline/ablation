@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125185043) do
+ActiveRecord::Schema.define(version: 20180126104554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,9 @@ ActiveRecord::Schema.define(version: 20180125185043) do
     t.jsonb "misc", default: "{}"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.integer "search_type", default: 0, null: false
+    t.index ["category_id"], name: "index_search_fields_on_category_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -180,6 +183,7 @@ ActiveRecord::Schema.define(version: 20180125185043) do
   add_foreign_key "peers", "users"
   add_foreign_key "release_metadata", "releases"
   add_foreign_key "releases", "categories"
+  add_foreign_key "search_fields", "categories"
   add_foreign_key "torrent_files", "torrents"
   add_foreign_key "torrent_metadata", "torrents"
   add_foreign_key "torrents", "releases"

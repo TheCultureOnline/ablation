@@ -38,7 +38,7 @@ categories.each do |name, cat|
     )
   end
 
-  [].each do |t|
+  ["publisher"].each do |t|
     CategoryMetadataType.find_or_create_by!(
       category: cat,
       name: t,
@@ -55,15 +55,6 @@ begin
       category: categories[:ebooks],
       name: t,
       field_type: CategoryMetadataType.field_types[:number_field],
-      metadata_for: CategoryMetadataType.metadata_fors[:release]
-    )
-  end
-
-  ["publisher"].each do |t|
-    CategoryMetadataType.find_or_create_by!(
-      category: categories[:ebooks],
-      name: t,
-      field_type: CategoryMetadataType.field_types[:text_field],
       metadata_for: CategoryMetadataType.metadata_fors[:release]
     )
   end
@@ -125,6 +116,12 @@ begin
     value: "16.04.3"
   )
 
+  ReleaseMetadatum.find_or_create_by!(
+    release: u1604,
+    name: "publisher",
+    value: "Canonical"
+  )
+
   # 16.04 i386
   torrent = Torrent.from_file(
     Rails.root.join("db", "files", "software", "ubuntu-16.04.3-desktop-i386.iso.torrent"),
@@ -160,6 +157,12 @@ begin
     value: "2014"
   )
 
+  ReleaseMetadatum.find_or_create_by!(
+    release: u1404,
+    name: "publisher",
+    value: "Canonical"
+  )
+
   # 14.04 AMD64
   torrent = Torrent.from_file(
     Rails.root.join("db", "files", "software", "ubuntu-14.04.5-desktop-amd64.iso.torrent"),
@@ -171,6 +174,7 @@ begin
     name: "arch",
     value: "x86_64"
   )
+
   TorrentMetadatum.find_or_create_by!(
     torrent: torrent,
     name: "version",
@@ -189,12 +193,21 @@ begin
     )
   end
 
-  ["cover art", "youtube trailer", "scene", "personal rip"].each do |t|
+  ["cover art", "youtube trailer"].each do |t|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:movies],
       name: t,
       field_type: CategoryMetadataType.field_types[:text_field],
       metadata_for: CategoryMetadataType.metadata_fors[:release]
+    )
+  end
+
+  ["scene", "personal rip"].each do |t|
+    CategoryMetadataType.find_or_create_by!(
+      category: categories[:movies],
+      name: t,
+      field_type: CategoryMetadataType.field_types[:text_field],
+      metadata_for: CategoryMetadataType.metadata_fors[:torrent]
     )
   end
   [
@@ -231,6 +244,31 @@ end
 
 SearchField.find_or_create_by!(
   name: "year",
-  kind: SearchField::kinds[:number_field_tag],
+  kind: SearchField.kinds[:number_field_tag],
   sort_order: 0,
+  search_type: SearchField.search_types[:release],
+)
+
+SearchField.find_or_create_by!(
+  name: "publisher",
+  kind: SearchField.kinds[:text_field_tag],
+  sort_order: 1,
+  search_type: SearchField.search_types[:release],
+)
+
+SearchField.find_or_create_by!(
+  name: "scene",
+  kind: SearchField.kinds[:check_box_tag],
+  sort_order: 2,
+  category: categories[:movies],
+  search_type: SearchField.search_types[:torrent],
+)
+
+SearchField.find_or_create_by!(
+  name: "arch",
+  kind: SearchField.kinds[:select_tag],
+  sort_order: 3,
+  category: categories[:software],
+  search_type: SearchField.search_types[:torrent],
+  options: ["x86", "x86_64", "ARM"]
 )
