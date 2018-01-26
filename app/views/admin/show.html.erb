@@ -19,5 +19,5 @@
   </p>
 <%- end %>
 
-<%= link_to 'Edit', send("edit_admin_#{current_model.to_s.underscore}_path", @model) %> |
-<%= link_to 'Back', [:admin, current_model] %>
+<%= link_to 'Edit', edit_path_parts(@model) %> |
+<%= link_to 'Back', show_path_parts(current_model) %>

@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   resources :announcements
   namespace :admin do
     get "/", to: "dashboard#index", as: "dashboard"
-    resources :categories
+    resources :categories do
+      resources :category_metadata_types
+    end
     resources :users
     resources :releases
     resources :torrents
