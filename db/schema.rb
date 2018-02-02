@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126104554) do
+ActiveRecord::Schema.define(version: 20180202102237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180126104554) do
     t.text "options", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "help_text"
     t.index ["category_id"], name: "index_category_metadata_types_on_category_id"
   end
 

@@ -17,13 +17,13 @@ class TorrentsController < ApplicationController
     #   end
     #   with(:category_id, params[:category_id]) if params[:category_id]
     # end.results
-    puts params
     @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).order(:updated_at)
     @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name].gsub(/\W/, '%') }%") if params[:name].present?
     @releases = @releases.where(category: params[:category]) if params[:category].present?
     category =  params[:category].present? ? params[:category] : nil
     possible_fields = params.permit(SearchField.pluck(:name)).to_hash
-    fields = SearchField.where(name: possible_fields.map { |name, value| name if value.present? }.compact, category: [nil, category].uniq)
+    fields = SearchField.where(name: possible_fields.map { |name, value| name if value.present? }.compact)
+    fields = fields.where(category: [nil, category].uniq) if category
     torrent_metadata = TorrentMetadatum.select(:torrent_id)
     have_torrent_metadata = false
     fields.each do |field|
@@ -32,6 +32,7 @@ class TorrentsController < ApplicationController
       end
       if ["torrent", "all"].include? field.search_type
         torrent_metadata = torrent_metadata.where(name: field.name, value: params[field.name])
+        puts field
         have_torrent_metadata = true
       end
     end
@@ -64,6 +65,7 @@ class TorrentsController < ApplicationController
   # GET /torrents/new
   def new
     @torrent = Torrent.new
+    @metadata = CategoryMetadataType.order(id: :asc)
     if params[:category_id]
       @category = Category.find(params[:category_id])
     end
@@ -71,7 +73,9 @@ class TorrentsController < ApplicationController
       @release = Release.find(params[:release_id])
       @torrent.release_id = params[:release_id]
       @category = @release.category
+      @metadata = @metadata.where(metadata_for: CategoryMetadataType.metadata_fors[:torrent])
     end
+    @metadata = @metadata.where(category: @category) if @category
   end
 
   # GET /torrents/1/edit
@@ -79,6 +83,7 @@ class TorrentsController < ApplicationController
     set_torrent
     @release = @torrent.release
     @category = @release.category
+    @metadata = CategoryMetadataType.where(category: @category)
   end
 
   # POST /torrents
