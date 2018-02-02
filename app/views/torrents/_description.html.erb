@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="small-3 columns">
+        <%= form.label :description, "Release Description:" %>
+    </div>
+    <div class="small-9 columns">
+        <%=  form.text_area :description, class: "tinymce" %>
+    </div>
+</div>
+<div class="row">
+    <div class="small-12 columns">
+        <p><small>We require at least three PNG screenshots (guide), and a full MediaInfo (guide) or BDInfo (guide) log .
+Please consult our rules page for more information on required information.</small></p>
+    </div>
+</div>
+
+<%- content_for(:scripts) do %>
+<%= tinymce_assets %>
+<%= tinymce %>
+<%- end %>

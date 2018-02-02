@@ -13,46 +13,47 @@
   <%= form.hidden_field :release_id, value: params[:release_id] %>
 
   <div class="row">
-    <div class="row">
-      <div class="small-3 columns">
-        <%= form.label :torrent, "Torrent file" %>
-      </div>
-      <div class="small-9 columns">
-        <%= form.file_field :torrent %>
-      </div>
+    <div class="small-3 columns">
+      <%= form.label :torrent, "Torrent file" %>
+    </div>
+    <div class="small-9 columns">
+      <%= form.file_field :torrent %>
     </div>
   </div>
 
   <div class="row">
-    <div class="row">
-      <div class="small-3 columns">
-        <%= form.label :name %>
-      </div>
-      <div class="small-9 columns">
-        <%= form.text_field :name, value: @release.nil? ? nil : @release.name, disabled: @release.present? %>
-      </div>
+    <div class="small-3 columns">
+      <%= form.label :name %>
+    </div>
+    <div class="small-9 columns">
+      <%= form.text_field :name, value: @release.nil? ? nil : @release.name, disabled: @release.present? %>
     </div>
   </div>
-  <%- if @category.movie? %>
-    <%= render partial: 'movie', locals: { torrent: @torrent, form: form } %>
-  <%- end %>
 
-  <%- if @category.music? %>
-    <%= render partial: 'music', locals: { torrent: @torrent, form: form } %>
+  <hr />
+  <%- @metadata.each do |field| %>
+    <%- if lookup_context.find_all("torrents/_#{field.name}").any? %>
+      <%= render partial:field.name, locals: {form: form, field: field} %>
+    <%- else %>
+      <div class="row">
+        <div class="small-3 columns">
+          <%= form.label field.name %>
+        </div>
+        <div class="small-4 columns">
+          <%- if field.field_type == "select_field" %>
+            <%= form.send("select", field.name, options_for_select(field.options), {include_blank: "Select #{field.name }"}) %>
+          <% else %>
+            <%= form.send(field.field_type.to_sym, field.name, placeholder: (field.name).titlecase) %>
+          <%- end %>
+        </div>
+        <div class="small-5 columns">
+          <%- if field.help_text.present? %>
+              <p><small><%= field.help_text.html_safe %></small></p>
+          <%- end %>
+        </div>
+      </div>
+      <%- end %>
   <%- end %>
-
-  <%- if @category.software? %>
-    <%= render partial: 'software', locals: { torrent: @torrent, form: form } %>
-  <%- end %>
-
-  <%- if @category.tv? %>
-    <%= render partial: 'tv', locals: { torrent: @torrent, form: form } %>
-  <%- end %>
-
-  <%- if @category.ebook? %>
-    <%= render partial: 'ebook', locals: { torrent: @torrent, form: form } %>
-  <%- end %>
-
 
   <div class="actions">
     <%= form.submit "Upload", class: "button" %>

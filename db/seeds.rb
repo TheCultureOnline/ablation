@@ -34,7 +34,8 @@ categories.each do |name, cat|
       category: cat,
       name: t,
       field_type: CategoryMetadataType.field_types[:number_field],
-      metadata_for: CategoryMetadataType.metadata_fors[:release]
+      metadata_for: CategoryMetadataType.metadata_fors[:release],
+      help_text: "This is the year of the original release",
     )
   end
 
@@ -89,13 +90,14 @@ begin
     )
   end
 
-  [["arch", ["x86", "x84_64", "ARM"]],].each do |t, options|
+  [["arch", ["x86", "x84_64", "ARM"], "What architecture is this release for"],].each do |t, options, help|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:software],
       name: t,
       field_type: CategoryMetadataType.field_types[:select_field],
       metadata_for: CategoryMetadataType.metadata_fors[:torrent],
-      options: options
+      options: options,
+      help_text: help,
     )
   end
 
@@ -193,21 +195,31 @@ begin
     )
   end
 
-  ["cover art", "youtube trailer"].each do |t|
+  [
+    ["cover art", nil],
+    ["youtube trailer", nil],
+  ].each do |t, help_text|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:movies],
       name: t,
       field_type: CategoryMetadataType.field_types[:text_field],
-      metadata_for: CategoryMetadataType.metadata_fors[:release]
+      metadata_for: CategoryMetadataType.metadata_fors[:release],
+      help_text: help_text,
     )
   end
 
-  ["scene", "personal rip"].each do |t|
+  [
+    ["scene", "Check this only if this is a 'scene release'. If you ripped it yourself, it is not a scene release.<br />You can double check by searching the file name on pre.corrupt-net.org or on srrDB."],
+    ["personal rip", "Check this only if you made this rip."],
+    ["special", "Check this only if it does NOT contain the main movie.<br />Examples: ONLY contains extras, Rifftrax, Workprints."],
+    ["remaster", "Check this box if this torrent has extra edition information.<br />Examples: Part of a collection, special edition, or non-standard rip feature. See the edition guide here."]
+  ].each do |t, help_text|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:movies],
       name: t,
-      field_type: CategoryMetadataType.field_types[:text_field],
-      metadata_for: CategoryMetadataType.metadata_fors[:torrent]
+      field_type: CategoryMetadataType.field_types[:check_box],
+      metadata_for: CategoryMetadataType.metadata_fors[:torrent],
+      help_text: help_text
     )
   end
   [
@@ -238,6 +250,18 @@ begin
       name: t,
       field_type: CategoryMetadataType.field_types[:text_field],
       metadata_for: CategoryMetadataType.metadata_fors[:torrent]
+    )
+  end
+
+  [
+    ["description", "We require at least three PNG screenshots (guide), and a full MediaInfo (guide) or BDInfo (guide) log.<br />Please consult our rules page for more information on required information."]
+  ].each do |t, help_text|
+    CategoryMetadataType.find_or_create_by!(
+      category: categories[:movies],
+      name: t,
+      field_type: CategoryMetadataType.field_types[:text_field],
+      metadata_for: CategoryMetadataType.metadata_fors[:release],
+      help_text: help_text,
     )
   end
 end
