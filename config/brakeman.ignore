@@ -10,7 +10,7 @@
       "line": 11,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "Announcement.new(announcement_params).body",
-      "render_path": [{"type":"controller","class":"AnnouncementsController","method":"create","line":35,"file":"app/controllers/announcements_controller.rb"},{"type":"template","name":"announcements/show","line":3,"file":"app/views/announcements/show.html.erb"}],
+      "render_path": [{"type":"controller","class":"AnnouncementsController","method":"create","line":35,"file":"app/controllers/announcements_controller.rb"},{"type":"template","name":"announcements/show","line":1,"file":"app/views/announcements/show.html.erb"}],
       "location": {
         "type": "template",
         "template": "announcements/_single"
@@ -20,13 +20,32 @@
       "note": "Only (trusted) moderators and admins can create announcements"
     },
     {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "473162b7ad2e41eb3d4b7a78c0a35fa968d52a61c84020dd3e7791b9b3098412",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/torrents/_form.html.erb",
+      "line": 51,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "CategoryMetadataType.new.help_text",
+      "render_path": [{"type":"controller","class":"TorrentsController","method":"edit","line":87,"file":"app/controllers/torrents_controller.rb"},{"type":"template","name":"torrents/edit","line":3,"file":"app/views/torrents/edit.html.erb"}],
+      "location": {
+        "type": "template",
+        "template": "torrents/_form"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": "The only users who can set the help text are admins"
+    },
+    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "4ad056b4c9a4d535ba7e58d1fd253484cfe6f680b719a883036d860979d116c4",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/info_hash.rb",
-      "line": 55,
+      "line": 27,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "ActiveRecord::Base.connection.execute(\"WITH t AS (\\n        SELECT id, downloaded, completed, remaining\\n        FROM peers\\n        WHERE \\\"peers\\\".\\\"torrent_id\\\" = 1\\n        AND (\\\"peers\\\".\\\"updated_at\\\" > NOW() - interval '#{(Setting.announce_interval * 2)} seconds')\\n    )\\n    SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,\\n           (SELECT COUNT(t.completed) from t) AS completed,\\n           (SELECT COUNT(id) from t WHERE t.remaining != 0) AS incomplete\")",
       "render_path": null,
@@ -40,6 +59,6 @@
       "note": "The only person who could potentially inject here is the site admin"
     }
   ],
-  "updated": "2018-01-11 17:17:16 +0100",
+  "updated": "2018-02-02 12:06:55 +0100",
   "brakeman_version": "4.1.1"
 }
