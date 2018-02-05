@@ -62,6 +62,13 @@ gem "skylight", group: :production
 # Catch Errors
 gem "sentry-raven", group: :production
 
+gem "rufus-scheduler"
+
+gem "peek"
+gem "peek-performance_bar"
+gem "peek-gc"
+gem "peek-pg"
+
 group :development, :test do
   gem "dotenv-rails"
   gem "pry"
@@ -78,7 +85,8 @@ group :development, :test do
 end
 
 group :development do
-  gem "sunspot_solr" # optional pre-packaged Solr distribution for use in development
+  gem "scout_apm"
+  # gem "sunspot_solr" # optional pre-packaged Solr distribution for use in development
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console", ">= 3.3.0"
   gem "rails_layout"

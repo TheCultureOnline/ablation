@@ -8,9 +8,9 @@ class TrackerController < ApplicationController
 
   def announce
     hash = params[:info_hash].unpack("H*").first
-    torrent = Torrent.where(info_hash: hash).first
-    info_hash = InfoHash.new(torrent)
-    event! @user, torrent
+    torrent = Torrent.select(:id, :info_hash, :release_id, :snatched, :name).find_by(info_hash: hash)
+    info_hash = InfoHash.new(torrent, params[:info_hash])
+    event! @user_id, torrent
     announce = info_hash.announce(
       params[:compact].to_i == 1,
         params[:no_peer_id].to_i == 1,
@@ -23,17 +23,18 @@ class TrackerController < ApplicationController
     if params[:info_hash]
       failure("invalid info_hash") && return if params[:info_hash].bytesize != 20
       hash = params[:info_hash].unpack("H*").first
-      result = InfoHash.new(hash, Torrent.where(info_hash: hash).first).scrape
+      result = InfoHash.new(Torrent.find_by(info_hash: hash), params[:info_hash]).scrape
       render plain: result.bencode
     else
       failure("no info_hash")
+      binding.pry
       # Could return information on _all_ torrents?
     end
   end
 
     protected
       def set_user
-        failure("invalid torrent_pass specified") && (return) if @user.nil?
+        failure("invalid torrent_pass specified") && (return) if @user_id.nil?
       end
 
       def validate_announce
@@ -48,12 +49,13 @@ class TrackerController < ApplicationController
         render plain: { "failure reason" => reason }.bencode, status: code
       end
 
-      def event!(user, torrent)
+      def event!(user_id, torrent)
         if params["event"] == "stopped"
-          Peer.where(user_id: user.id, peer_id: params[:peer_id]).update_all(active: false)
+          Peer.where(user_id: user_id, peer_id: params[:peer_id]).update_all(active: false)
+          # Peer.where(user_id: user_id, peer_id: params[:peer_id]).delete_all
         else
           ip = params[:ip] ||= request.env["REMOTE_ADDR"]
-          peer = Peer.where(user_id: user.id, peer_id: params[:peer_id], torrent: torrent).first_or_initialize
+          peer = Peer.where(user_id: user_id, torrent: torrent, peer_id: params[:peer_id]).first_or_initialize
           new_peer = peer.new_record?
           peer.update(
             active: true,
@@ -66,14 +68,14 @@ class TrackerController < ApplicationController
               user_agent: request.user_agent,
           )
           torrent.increment!(:snatched) if new_peer
-          torrent.update!(
-            leechers: torrent.peers.where(active: true).where.not(remaining: 0).count,
-            seeders: torrent.peers.where(active: true).where(remaining: 0).count,
-          )
         end
       end
 
       def authenticate_user!
-        @user = User.where(torrent_pass: params[:torrent_pass]).first
+        @user_id = User.where(torrent_pass: params[:torrent_pass]).limit(1).pluck(:id)
+      end
+
+      def peek_enabled?
+        false
       end
 end
