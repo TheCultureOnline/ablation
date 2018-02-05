@@ -32,10 +32,9 @@ Rails.application.routes.draw do
     end
     resources :search_fields
 
-
     mount RailsSettingsUi::Engine, at: "settings"
   end
-
+  mount Peek::Railtie => '/peek'
   get ":torrent_pass/announce", to: "tracker#announce"
   get ":torrent_pass/scrape", to: "tracker#scrape"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

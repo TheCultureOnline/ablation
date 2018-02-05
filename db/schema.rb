@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180202102237) do
+ActiveRecord::Schema.define(version: 20180205102943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20180202102237) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["torrent_id"], name: "index_peers_on_torrent_id"
+    t.index ["torrent_id"], name: "torrent_by_active", where: "active"
     t.index ["user_id"], name: "index_peers_on_user_id"
   end
 

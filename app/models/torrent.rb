@@ -33,4 +33,12 @@ class Torrent < ApplicationRecord
     TorrentFile.find_or_create_by!(torrent_file.attributes.delete_if { |k, v| v.blank? })
     torrent
   end
+
+  # def leechers
+  #   peers.where(active: true).where.not(remaining: 0).count
+  # end
+
+  # def seeders
+  #   peers.where(active: true).where(remaining: 0).count
+  # end
 end

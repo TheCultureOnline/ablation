@@ -17,4 +17,8 @@ class ApplicationController < ActionController::Base
     def is_tracker?
       params[:controller] == "tracker"
     end
+
+    def peek_enabled?
+      current_user && current_user.admin?
+    end
 end
