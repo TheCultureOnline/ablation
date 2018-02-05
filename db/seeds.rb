@@ -198,6 +198,7 @@ begin
   [
     ["cover art", nil],
     ["youtube trailer", nil],
+    ["Imdb ID"]
   ].each do |t, help_text|
     CategoryMetadataType.find_or_create_by!(
       category: categories[:movies],
