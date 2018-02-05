@@ -39,6 +39,7 @@ class InfoHash
   private
     def peers(how_many_peers)
       Peer
+          .select(:ip, :port)
           .limit(how_many_peers)
           .where(torrent_id: @torrent.id)
           .where(active: true)
