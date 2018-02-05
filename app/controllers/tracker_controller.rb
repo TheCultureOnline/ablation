@@ -8,7 +8,7 @@ class TrackerController < ApplicationController
 
   def announce
     hash = params[:info_hash].unpack("H*").first
-    torrent = Torrent.where(info_hash: hash).first
+    torrent = Torrent.find_by(info_hash: hash)
     info_hash = InfoHash.new(torrent)
     event! @user_id, torrent
     announce = info_hash.announce(
@@ -23,7 +23,7 @@ class TrackerController < ApplicationController
     if params[:info_hash]
       failure("invalid info_hash") && return if params[:info_hash].bytesize != 20
       hash = params[:info_hash].unpack("H*").first
-      result = InfoHash.new(hash, Torrent.where(info_hash: hash).first).scrape
+      result = InfoHash.new(Torrent.find_by(info_hash: hash)).scrape
       render plain: result.bencode
     else
       failure("no info_hash")
