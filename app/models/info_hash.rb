@@ -27,7 +27,7 @@ class InfoHash
     stats = ActiveRecord::Base.connection.execute(sql)[0]
     {
         files: {
-            @raw_hash=> {
+            @raw_hash => {
                 downloaded: stats["downloaded"] || 0,
                 complete: stats["completed"] || 0,
                 incomplete: stats["incomplete"] || 0,
