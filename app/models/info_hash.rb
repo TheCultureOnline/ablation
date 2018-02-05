@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class InfoHash
-  def initialize(torrent)
-    @id = torrent.info_hash
+  def initialize(torrent, raw_hash)
     @torrent = torrent
+    @raw_hash = raw_hash
   end
 
   def announce(compact, peer_id, how_many_peers)
@@ -18,7 +18,7 @@ class InfoHash
     sql = "WITH t AS (
         SELECT id, downloaded, completed, remaining
         FROM peers
-        WHERE \"peers\".\"torrent_id\" = 1
+        WHERE \"peers\".\"torrent_id\" = '#{@torrent.id}'
         AND (\"peers\".\"updated_at\" > NOW() - interval '#{Setting.announce_interval * 2} seconds')
     )
     SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,
@@ -27,10 +27,11 @@ class InfoHash
     stats = ActiveRecord::Base.connection.execute(sql)[0]
     {
         files: {
-            @id => {
+            @raw_hash => {
                 downloaded: stats["downloaded"] || 0,
                 complete: stats["completed"] || 0,
                 incomplete: stats["incomplete"] || 0,
+                name: @torrent.name,
             }
         }
     }
