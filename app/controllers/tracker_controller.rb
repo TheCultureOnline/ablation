@@ -10,7 +10,7 @@ class TrackerController < ApplicationController
     hash = params[:info_hash].unpack("H*").first
     torrent = Torrent.where(info_hash: hash).first
     info_hash = InfoHash.new(torrent)
-    event! @user, torrent
+    event! @user_id, torrent
     announce = info_hash.announce(
       params[:compact].to_i == 1,
         params[:no_peer_id].to_i == 1,
@@ -33,7 +33,7 @@ class TrackerController < ApplicationController
 
     protected
       def set_user
-        failure("invalid torrent_pass specified") && (return) if @user.nil?
+        failure("invalid torrent_pass specified") && (return) if @user_id.nil?
       end
 
       def validate_announce
@@ -48,9 +48,9 @@ class TrackerController < ApplicationController
         render plain: { "failure reason" => reason }.bencode, status: code
       end
 
-      def event!(user, torrent)
+      def event!(user_id, torrent)
         if params["event"] == "stopped"
-          Peer.where(user_id: user.id, peer_id: params[:peer_id]).update_all(active: false)
+          Peer.where(user_id: user_id, peer_id: params[:peer_id]).update_all(active: false)
         else
           ip = params[:ip] ||= request.env["REMOTE_ADDR"]
           peer = Peer.where(user_id: user.id, peer_id: params[:peer_id], torrent: torrent).first_or_initialize
@@ -74,6 +74,6 @@ class TrackerController < ApplicationController
       end
 
       def authenticate_user!
-        @user = User.where(torrent_pass: params[:torrent_pass]).first
+        @user_id = User.where(torrent_pass: params[:torrent_pass]).limit(1).pluck(:id)
       end
 end
