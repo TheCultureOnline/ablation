@@ -2,7 +2,7 @@
 
 class Torrent < ApplicationRecord
   has_one :torrent_file, dependent: :destroy
-  has_many :peers
+  has_many :peers, dependent: :destroy
   belongs_to :release
   delegate :category, to: :release
   has_many :torrent_metadata, dependent: :destroy
@@ -11,7 +11,15 @@ class Torrent < ApplicationRecord
 
   def self.from_file(path, release)
     torrent_file = TorrentFile.from_raw(File.read(path))
+    Torrent.from_torrent_file(torrent_file, release)
+  end
 
+  def self.from_url(url, release)
+    torrent_file = TorrentFile.from_raw(open(url).read)
+    Torrent.from_torrent_file(torrent_file, release)
+  end
+
+  def self.from_torrent_file(torrent_file, release)
     torrent = Torrent.new(
       size: torrent_file.length,
       name: torrent_file.name,
@@ -24,11 +32,14 @@ class Torrent < ApplicationRecord
     end
     if torrent_file.files
       torrent_file.files.each do |f|
-        torrent.file_list << f["path"]
+        torrent.file_list << File.join(f["path"])
       end
     end
     torrent.file_count = torrent.file_list.length
-    torrent = Torrent.find_or_create_by!(torrent.attributes.delete_if { |k, v| v.blank? })
+    # torrent = Torrent.find_or_create_by!(torrent.attributes.delete_if { |k, v| v.blank? })
+    torrent_attrs = torrent.attributes.delete_if { |k, v| v.blank? }
+    torrent = Torrent.where(info_hash: torrent.info_hash).first_or_initialize
+    torrent.update(torrent_attrs)
     torrent_file.torrent = torrent
     TorrentFile.find_or_create_by!(torrent_file.attributes.delete_if { |k, v| v.blank? })
     torrent

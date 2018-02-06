@@ -2,6 +2,7 @@
 
 class TorrentsController < ApplicationController
   # before_action :set_torrent, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, if: -> { params[:action] == "show" && params[:format] == "torrent" }
 
   # GET /torrents
   # GET /torrents.json
@@ -32,7 +33,6 @@ class TorrentsController < ApplicationController
       end
       if ["torrent", "all"].include? field.search_type
         torrent_metadata = torrent_metadata.where(name: field.name, value: params[field.name])
-        puts field
         have_torrent_metadata = true
       end
     end
@@ -57,6 +57,7 @@ class TorrentsController < ApplicationController
         raw = TorrentFile.where(torrent_id: @torrent.id).first
         torrent = BEncode.load(raw.data)
         torrent["announce"] = "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}:#{Setting.tracker_port }/#{params[:torrent_pass]}/announce"
+        torrent["comment"] = torrent_url(@torrent.release_id, torrent_id: @torrent.id)
         send_data(torrent.bencode, filename: "#{@torrent.name}.torrent")
       }
     end
@@ -91,7 +92,7 @@ class TorrentsController < ApplicationController
   def create
     torrent = params[:torrent].delete(:torrent)
     category_id = params[:torrent].delete(:category_id)
-    release = if params[:torrent][:release_id]
+    release = if params[:torrent][:release_id].present?
       Release.find(params[:torrent].delete(:release_id))
     else
       Release.find_or_create_by!(name: params[:torrent].delete(:name), category_id: category_id)

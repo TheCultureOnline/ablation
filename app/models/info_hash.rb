@@ -28,9 +28,9 @@ class InfoHash
     {
         files: {
             @raw_hash => {
-                downloaded: stats["downloaded"] || 0,
-                complete: stats["completed"] || 0,
-                incomplete: stats["incomplete"] || 0,
+                downloaded: (stats["downloaded"] || 0).to_i,
+                complete: (stats["completed"] || 0).to_i,
+                incomplete: (stats["incomplete"] || 0).to_i,
                 name: @torrent.name,
             }
         }
