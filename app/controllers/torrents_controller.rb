@@ -91,7 +91,7 @@ class TorrentsController < ApplicationController
   def create
     torrent = params[:torrent].delete(:torrent)
     category_id = params[:torrent].delete(:category_id)
-    release = if params[:torrent][:release_id]
+    release = if params[:torrent][:release_id].present?
       Release.find(params[:torrent].delete(:release_id))
     else
       Release.find_or_create_by!(name: params[:torrent].delete(:name), category_id: category_id)
