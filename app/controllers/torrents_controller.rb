@@ -33,7 +33,6 @@ class TorrentsController < ApplicationController
       end
       if ["torrent", "all"].include? field.search_type
         torrent_metadata = torrent_metadata.where(name: field.name, value: params[field.name])
-        puts field
         have_torrent_metadata = true
       end
     end
@@ -58,6 +57,7 @@ class TorrentsController < ApplicationController
         raw = TorrentFile.where(torrent_id: @torrent.id).first
         torrent = BEncode.load(raw.data)
         torrent["announce"] = "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}:#{Setting.tracker_port }/#{params[:torrent_pass]}/announce"
+        torrent["comment"] = torrent_url(@torrent.release_id, torrent_id: @torrent.id)
         send_data(torrent.bencode, filename: "#{@torrent.name}.torrent")
       }
     end

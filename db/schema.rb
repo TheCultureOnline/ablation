@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206090642) do
+ActiveRecord::Schema.define(version: 20180206102132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,9 +52,9 @@ ActiveRecord::Schema.define(version: 20180206090642) do
     t.boolean "active", default: true, null: false
     t.integer "announced", default: 0, null: false
     t.boolean "completed", default: false, null: false
-    t.integer "downloaded", default: 0, null: false
-    t.integer "uploaded", default: 0, null: false
-    t.integer "remaining", default: 0, null: false
+    t.bigint "downloaded", default: 0, null: false
+    t.bigint "uploaded", default: 0, null: false
+    t.bigint "remaining", default: 0, null: false
     t.integer "upspeed", default: 0, null: false
     t.integer "downspeed", default: 0, null: false
     t.integer "timespent", default: 0, null: false
