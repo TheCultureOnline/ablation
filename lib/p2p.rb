@@ -58,7 +58,7 @@ class P2P < Importer
       category: Category.find_by(name: "Movies"),
     )
     if torrent_result["Year"]
-      release = release.where(release_metadata: {
+      release = release.joins(:release_metadata).where(release_metadata: {
           name: "year",
           value: torrent_result["Year"]
       })
@@ -79,8 +79,8 @@ class P2P < Importer
       d.value = torrent_result[external_name]
       d.save
     end
-
     torrent_result["Torrents"].each do |torrent_result|
+      next unless torrent_result["FreeleechType"] == "Freeleech"
       torrent_url = "https://passthepopcorn.me/torrents.php?action=download&id=#{torrent_result["Id"]}&authkey=#{auth_key}&torrent_pass=#{@key}"
       P2P.seedbox(torrent_url, false, @seedbox_url, @seedbox_user, @seedbox_pass)
       torrent = Torrent.from_url(torrent_url, release)
