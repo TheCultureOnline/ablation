@@ -2,6 +2,7 @@
 
 class TorrentsController < ApplicationController
   # before_action :set_torrent, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, if: -> { params[:action] == "show" && params[:format] == "torrent" }
 
   # GET /torrents
   # GET /torrents.json
