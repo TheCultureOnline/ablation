@@ -24,7 +24,7 @@ class TrackerController < ApplicationController
     if params[:info_hash]
       failure("invalid info_hash") && return if params[:info_hash].bytesize != 20
       hash = params[:info_hash].unpack("H*").first
-      torent = Torrent.find_by(info_hash: hash)
+      torrent = Torrent.find_by(info_hash: hash)
       failure("unregistered torrent") and (return) if torrent.nil?
       result = InfoHash.new(torrent, params[:info_hash]).scrape
       render plain: result.bencode
