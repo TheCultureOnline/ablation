@@ -15,7 +15,7 @@ class Torrent < ApplicationRecord
   end
 
   def self.from_url(url, release)
-    torrent_file = TorrentFile.from_raw(open(path).read)
+    torrent_file = TorrentFile.from_raw(open(url).read)
     Torrent.from_torrent_file(torrent_file, release)
   end
 
