@@ -4,7 +4,7 @@ require "importer"
 require "open-uri"
 
 class P2P < Importer
-  def initialize(username, password, key)
+  def initialize(username, password, key, seedbox_url=nil, seedbox_user=nil, seedbox_pass=nil)
     @username = username
     @password = password
     @key = key
@@ -14,6 +14,11 @@ class P2P < Importer
         login: "ajax.php?action=login",
         search: "search/%s/0/7/%d",
     )
+    @seedbox_url = seedbox_url
+    @seedbox_user = seedbox_user
+    @seedbox_pass = seedbox_pass
+
+    @base_user = User.first
   end
 
   def search(query, page = 1)
@@ -77,9 +82,28 @@ class P2P < Importer
 
     torrent_result["Torrents"].each do |torrent_result|
       torrent_url = "https://passthepopcorn.me/torrents.php?action=download&id=#{torrent_result["Id"]}&authkey=#{auth_key}&torrent_pass=#{@key}"
+      P2P.seedbox(torrent_url, false, @seedbox_url, @seedbox_user, @seedbox_pass)
       torrent = Torrent.from_url(torrent_url, release)
+      internal_url = "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}:#{Setting.tracker_port }/#{@base_user.torrent_pass}/announce"
+      P2P.seedbox(internal_url, true, @seedbox_url, @seedbox_user, @seedbox_pass)
       sleep 2
     end
+  end
+
+  def self.seedbox(torrent_url, start_paused=true, seedbox_url=nil, seedbox_user=nil, seedbox_pass=nil)
+    return if seedbox_url.nil?
+    parsed_url = URI(seedbox_url)
+    parsed_url.query = {
+        torrents_start_stopped: 1,
+    }.to_query if start_paused
+
+    http = Net::HTTP.new(parsed_url.host, parsed_url.port)
+    request = Net::HTTP::Post.new(parsed_url.request_uri)
+    request.basic_auth seedbox_user, seedbox_pass if seedbox_user && seedbox_pass
+    request.form_data = {
+        url: torrent_url,
+    }
+    http.request(request)
   end
 
   def login_params
