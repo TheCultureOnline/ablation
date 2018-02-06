@@ -32,7 +32,7 @@ class Torrent < ApplicationRecord
     end
     if torrent_file.files
       torrent_file.files.each do |f|
-        torrent.file_list << f["path"]
+        torrent.file_list << File.join(f["path"])
       end
     end
     torrent.file_count = torrent.file_list.length
