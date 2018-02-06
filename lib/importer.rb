@@ -10,6 +10,8 @@ class Importer
         @search = keyword_args[:search]
         @user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0'
         @cookies = ""
+
+        login
     end
 
     def login_params
