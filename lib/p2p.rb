@@ -48,7 +48,6 @@ class P2P < Importer
 
     def import torrent_result, auth_key
         release = Release.where(
-            name: torrent_result["Title"],
             category: Category.find_by(name: 'Movies'),
         )
         if torrent_result["Year"]
@@ -58,7 +57,9 @@ class P2P < Importer
             })
         end
         binding.pry if release.name == "year"
-        release = release.includes(:release_metadata).first_or_create!
+        release = release.where(
+            name: torrent_result["Title"],
+        ).first_or_create!
         [
             ["year", "Year"],
             ["covert art", "Cover"],

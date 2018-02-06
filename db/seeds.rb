@@ -101,10 +101,14 @@ begin
     )
   end
 
-  u1604 = Release.find_or_create_by(
-    name: "Ubuntu 16.4.3 Desktop",
+  u1604 = Release.joins(:release_metadata).where(
     category_id:  categories[:software].id,
-  )
+    release_metadata: {
+      name: "year",
+      value: "2016"
+    },
+    name: "Ubuntu Desktop",
+  ).first_or_create
 
   ReleaseMetadatum.find_or_create_by!(
     release: u1604,
@@ -148,10 +152,14 @@ begin
     value: "x86_64"
   )
 
-  u1404 = Release.find_or_create_by(
-    name: "Ubuntu 14.04.3 Desktop",
+  u1404 = Release.joins(:release_metadata).where(
     category_id:  categories[:software].id,
-  )
+    release_metadata: {
+      name: "year",
+      value: "2014"
+    },
+    name: "Ubuntu Desktop",
+  ).first_or_create
 
   ReleaseMetadatum.find_or_create_by!(
     release: u1404,
