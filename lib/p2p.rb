@@ -63,7 +63,6 @@ class P2P < Importer
           value: torrent_result["Year"]
       })
     end
-    binding.pry if release.name == "year"
     release = release.where(
       name: torrent_result["Title"],
     ).first_or_create!
@@ -84,7 +83,7 @@ class P2P < Importer
       torrent_url = "https://passthepopcorn.me/torrents.php?action=download&id=#{torrent_result["Id"]}&authkey=#{auth_key}&torrent_pass=#{@key}"
       P2P.seedbox(torrent_url, false, @seedbox_url, @seedbox_user, @seedbox_pass)
       torrent = Torrent.from_url(torrent_url, release)
-      internal_url = "#{Setting.tracker_protocol}://#{Setting.tracker_hostname}:#{Setting.tracker_port }/#{@base_user.torrent_pass}/announce"
+      internal_url = "#{Setting.site_protocol}://#{Setting.site_hostname}:#{Setting.site_port}/torrents/#{torrent.id}.torrent?torrent_pass=#{@base_user.torrent_pass}"
       P2P.seedbox(internal_url, true, @seedbox_url, @seedbox_user, @seedbox_pass)
       sleep 2
     end
