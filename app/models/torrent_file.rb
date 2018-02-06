@@ -43,7 +43,7 @@ class TorrentFile < ApplicationRecord
     raw_torrent["info"].delete("libtorrent_resume")
     raw_torrent["info"]["private"] = 1
 
-    raw_torrent['info']['x-seed-ablation'] = SecureRandom.hex
+    raw_torrent["info"]["x-seed-ablation"] = SecureRandom.hex
     TorrentFile.new(data: raw_torrent.bencode)
   end
 end

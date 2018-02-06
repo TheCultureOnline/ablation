@@ -4,7 +4,7 @@ require "importer"
 require "open-uri"
 
 class P2P < Importer
-  def initialize(username, password, key, seedbox_url=nil, seedbox_user=nil, seedbox_pass=nil)
+  def initialize(username, password, key, seedbox_url = nil, seedbox_user = nil, seedbox_pass = nil)
     @username = username
     @password = password
     @key = key
@@ -89,7 +89,7 @@ class P2P < Importer
     end
   end
 
-  def self.seedbox(torrent_url, start_paused=true, seedbox_url=nil, seedbox_user=nil, seedbox_pass=nil)
+  def self.seedbox(torrent_url, start_paused = true, seedbox_url = nil, seedbox_user = nil, seedbox_pass = nil)
     return if seedbox_url.nil?
     parsed_url = URI(seedbox_url)
     parsed_url.query = {
