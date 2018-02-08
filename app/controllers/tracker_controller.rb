@@ -30,7 +30,6 @@ class TrackerController < ApplicationController
       render plain: result.bencode
     else
       failure("no info_hash")
-      binding.pry
       # Could return information on _all_ torrents?
     end
   end

@@ -39,21 +39,21 @@ class InfoHash
 
   private
     def peers(how_many_peers)
-      Peer
-          .select(:ip, :port)
-          .limit(how_many_peers)
-          .where(torrent_id: @torrent.id)
-          .where(active: true)
+      Peer.
+        limit(how_many_peers).
+        where(torrent_id: @torrent.id).
+        where(active: true).
+        pluck(:ip, :port)
     end
 
     def peer_list(compact, how_many_peers, peer_id = nil)
       list = peers(how_many_peers).map do |peer|
         if compact
-          [peer.ip.to_i, peer.port.to_i].pack("Nn")
+          [peer[0].to_i, peer[1].to_i].pack("Nn")
         else
           {
-            ip: peer.ip,
-            port: peer.port,
+            ip: peer[0],
+            port: peer[1],
           }.tap do |data|
             data[:peer_id] = peer_id if peer_id
           end
