@@ -53,7 +53,7 @@ class P2P < Importer
     end
   end
 
-  def import(torrent_result, auth_key)
+  def import(torrent_result, auth_key, freeleech = false)
     release = Release.where(
       category: Category.find_by(name: "Movies"),
     )
@@ -73,13 +73,16 @@ class P2P < Importer
     ].each do |internal_name, external_name|
       d = ReleaseMetadatum.where(
         release: release,
-          name: internal_name,
+        name: internal_name,
       ).first_or_initialize
       d.value = torrent_result[external_name]
       d.save
     end
     torrent_result["Torrents"].each do |torrent_result|
-      next unless torrent_result["FreeleechType"] == "Freeleech"
+      if freeleech
+        next unless torrent_result["FreeleechType"] == "Freeleech"
+      end
+      next if release.torrents.where(name: torrent_result["ReleaseName"]).any?
       torrent_url = "https://passthepopcorn.me/torrents.php?action=download&id=#{torrent_result["Id"]}&authkey=#{auth_key}&torrent_pass=#{@key}"
       P2P.seedbox(torrent_url, false, @seedbox_url, @seedbox_user, @seedbox_pass)
       torrent = Torrent.from_url(torrent_url, release)
