@@ -40,7 +40,7 @@ s.every "5m" do
       RETURNING torrents.id, torrents.seeders, torrents.leechers;")
 end
 
-s.every("1h") do
-  Rails.logger.debug { "Flushing peers" }
-  Peer.where(active: false).where("updated_at < ?", 12.hours.ago).delete_all
-end
+# s.every("1h") do
+#   Rails.logger.debug { "Flushing peers" }
+#   Peer.where(active: false).where("updated_at < ?", 2.days.ago).delete_all
+# end

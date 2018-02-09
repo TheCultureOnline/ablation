@@ -20,8 +20,8 @@ class Torrent < ApplicationRecord
   end
 
   def self.from_torrent_file(torrent_file, release)
+    size = torrent_file.length || 0
     torrent = Torrent.new(
-      size: torrent_file.length,
       name: torrent_file.name,
       info_hash: torrent_file.info_hash,
       release_id: release.id,
@@ -32,9 +32,11 @@ class Torrent < ApplicationRecord
     end
     if torrent_file.files
       torrent_file.files.each do |f|
+        size += f["length"] if torrent_file.length.nil?
         torrent.file_list << File.join(f["path"])
       end
     end
+    torrent.size = size
     torrent.file_count = torrent.file_list.length
     # torrent = Torrent.find_or_create_by!(torrent.attributes.delete_if { |k, v| v.blank? })
     torrent_attrs = torrent.attributes.delete_if { |k, v| v.blank? }
