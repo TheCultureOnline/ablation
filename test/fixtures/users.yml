@@ -10,6 +10,8 @@ admin:
   role: 7
   confirmed_at: <%= Time.now %>
   torrent_pass: admin_pass
+  uploaded: 0
+  downloaded: 0
 # column: value
 #
 user:
@@ -17,4 +19,6 @@ user:
   email: user@example.com
   confirmed_at: <%= Time.now %>
   torrent_pass: user_pass
+  uploaded: 0
+  downloaded: 0
 # column: value

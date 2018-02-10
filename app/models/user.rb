@@ -21,7 +21,11 @@ class User < ApplicationRecord
   end
 
   def ratio
-    uploaded / downloaded
+    if downloaded == 0
+      Float::INFINITY
+    else
+      uploaded / downloaded
+    end
   end
 
   def self.update_stats!
