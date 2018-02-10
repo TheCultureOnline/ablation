@@ -12,6 +12,7 @@ defaults: &defaults
   announce_interval: 600
   min_interval: 60
   default_peers: 10
+  free_upload: 524288000
 
 development:
   <<: *defaults

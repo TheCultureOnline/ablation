@@ -14,32 +14,12 @@ s = Rufus::Scheduler.singleton
 #
 s.every "5m" do
   Rails.logger.debug { "Updating torent stats" }
-  ActiveRecord::Base.connection.execute("UPDATE torrents
-      SET seeders = counts.seeders,
-          leechers = counts.leechers
-      FROM (
-          SELECT torrent_id,
-          (
-              SELECT COUNT('X')
-              FROM peers AS p1
-              WHERE remaining = 0
-              AND p1.torrent_id = peers.torrent_id
-              AND active = true
-          ) AS seeders,
-          (
-              SELECT COUNT('X')
-              FROM peers AS p2
-              WHERE remaining != 0
-              AND p2.torrent_id = peers.torrent_id
-              AND active = true
-          ) AS leechers
-          FROM peers
-          WHERE active = true
-      ) AS counts
-      WHERE counts.torrent_id = torrents.id
-      RETURNING torrents.id, torrents.seeders, torrents.leechers;")
+  Torrent.update_stats!
 end
 
+s.every("10m") do
+  User.update_stats!
+end
 # s.every("1h") do
 #   Rails.logger.debug { "Flushing peers" }
 #   Peer.where(active: false).where("updated_at < ?", 2.days.ago).delete_all

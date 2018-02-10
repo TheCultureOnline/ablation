@@ -56,8 +56,7 @@ gem "sunspot_rails"
 gem "progress_bar", require: false
 
 # Monitoring
-# gem "newrelic_rpm"
-gem "skylight", group: :production
+gem "newrelic_rpm"
 
 # Catch Errors
 gem "sentry-raven", group: :production
