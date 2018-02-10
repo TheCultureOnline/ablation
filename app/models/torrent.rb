@@ -9,6 +9,33 @@ class Torrent < ApplicationRecord
 
   enum freeleech_type: []
 
+  def self.update_stats!
+    ActiveRecord::Base.connection.execute("UPDATE torrents
+      SET seeders = counts.seeders,
+          leechers = counts.leechers
+      FROM (
+          SELECT torrent_id,
+          (
+              SELECT COUNT('X')
+              FROM peers AS p1
+              WHERE remaining = 0
+              AND p1.torrent_id = peers.torrent_id
+              AND active = true
+          ) AS seeders,
+          (
+              SELECT COUNT('X')
+              FROM peers AS p2
+              WHERE remaining != 0
+              AND p2.torrent_id = peers.torrent_id
+              AND active = true
+          ) AS leechers
+          FROM peers
+          WHERE active = true
+      ) AS counts
+      WHERE counts.torrent_id = torrents.id
+      RETURNING torrents.id, torrents.seeders, torrents.leechers;")
+  end
+
   def self.from_file(path, release)
     torrent_file = TorrentFile.from_raw(File.read(path))
     Torrent.from_torrent_file(torrent_file, release)
