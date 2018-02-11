@@ -19,7 +19,7 @@ module Ablation
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    
+
     unless Rails.application.secrets[:sentry_dsn].nil? || !Object.const_defined?("Raven")
       Raven.configure do |config|
         config.dsn = Rails.application.secrets[:sentry_dsn]
