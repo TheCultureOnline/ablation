@@ -18,7 +18,11 @@ Rails.application.configure do
   if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
 
-    config.cache_store = :memory_store
+    config.cache_store = :redis_store, "#{ENV["REDIS_URL"]}/0/cache", { expires_in: 90.minutes }
+    # config.action_dispatch.rack_cache = {
+    #     metastore:   "#{ENV["REDIS_URL"]}/1/metastore",
+    #     entitystore: "#{ENV["REDIS_URL"]}/1/entitystore"
+    # }
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=#{2.days.seconds.to_i}"
     }
@@ -27,6 +31,11 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+
+  config.peek.adapter = :redis, {
+    # client: $redis,
+    expires_in: 60 * 30 # => 30 minutes in seconds
+  }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

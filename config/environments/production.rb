@@ -53,7 +53,15 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
-
+  config.cache_store = :redis_store, "#{ENV["REDIS_URL"]}/0/cache", { expires_in: 90.minutes }
+  # config.action_dispatch.rack_cache = {
+  #     metastore:   "#{ENV["REDIS_URL"]}/1/metastore",
+  #     entitystore: "#{ENV["REDIS_URL"]}/1/entitystore"
+  # }
+  config.peek.adapter = :redis, {
+    # client: $redis,
+    expires_in: 60 * 30 # => 30 minutes in seconds
+  }
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "ablation_#{Rails.env}"
