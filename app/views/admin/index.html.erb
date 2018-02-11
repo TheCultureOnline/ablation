@@ -1,5 +1,5 @@
 <h1><%= current_model.to_s.pluralize %></h1>
-
+<%= link_to "New #{current_model.to_s}", new_path_parts %>
 <table>
   <thead>
     <tr>
@@ -41,7 +41,7 @@
     <% end %>
   </tbody>
 </table>
-
+<div class="row">
+  <%= will_paginate @models %>
+</div>
 <br>
-
-<%= link_to "New #{current_model.to_s}", new_path_parts %>
