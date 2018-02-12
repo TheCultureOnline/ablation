@@ -29,6 +29,9 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.5"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 3.0"
+gem "redis-store"
+gem "redis-rails"
+gem "redis-rack-cache"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -67,6 +70,7 @@ gem "peek"
 gem "peek-performance_bar"
 gem "peek-gc"
 gem "peek-pg"
+# gem "peek-redis"
 
 group :development, :test do
   gem "dotenv-rails"

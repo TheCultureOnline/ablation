@@ -18,7 +18,7 @@ class TorrentsController < ApplicationController
     #   end
     #   with(:category_id, params[:category_id]) if params[:category_id]
     # end.results
-    @releases = Release.page(params[:page] ? params[:page].to_i : 1).per_page(10).order(:updated_at)
+    @releases = Release.includes(:torrents).page(params[:page] ? params[:page].to_i : 1).per_page(10).order(:updated_at)
     @releases = @releases.where('"releases"."name" ILIKE ?', "%#{ params[:name].gsub(/\W/, '%') }%") if params[:name].present?
     @releases = @releases.where(category: params[:category]) if params[:category].present?
     category =  params[:category].present? ? params[:category] : nil
