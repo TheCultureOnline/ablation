@@ -14,6 +14,9 @@ rvm:
 # addons:
 #   firefox: "38.0.5" # Set Firefox Version if needed.
 
+services:
+  - redis-server
+
 # If needed, use xvfb to setup fake monitor display so Firefox GUI can be used by specs:
 # http://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-GUI-(e.g.-a-Web-browser)
 # before_install:
