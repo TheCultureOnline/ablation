@@ -19,6 +19,7 @@ class InfoHash
         SELECT id, downloaded, completed, remaining
         FROM peers
         WHERE \"peers\".\"torrent_id\" = '#{@torrent.id}'
+        AND \"peers\".\"active\" = true
         AND (\"peers\".\"updated_at\" > NOW() - interval '#{Setting.announce_interval * 2} seconds')
     )
     SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,

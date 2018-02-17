@@ -26,6 +26,6 @@ class InfoHashTest < ActiveSupport::TestCase
 
   test "it scrapes" do
     info_hash = InfoHash.new @torrent, "1234"
-    assert info_hash.scrape[:files]["1234"] == { downloaded: 2, complete: 2, incomplete: 2, name: "one" }
+    assert info_hash.scrape[:files]["1234"] == { downloaded: 1, complete: 1, incomplete: 1, name: "one" }
   end
 end

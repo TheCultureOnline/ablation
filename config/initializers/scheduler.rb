@@ -20,6 +20,11 @@ end
 s.every("10m") do
   User.update_stats!
 end
+
+s.every("1h") do
+  Peer.mark_inactive!
+end
+
 # s.every("1h") do
 #   Rails.logger.debug { "Flushing peers" }
 #   Peer.where(active: false).where("updated_at < ?", 2.days.ago).delete_all
