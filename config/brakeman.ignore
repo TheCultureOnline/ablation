@@ -1,26 +1,6 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "0ec63d837dfc9fbbb686addf3abceea9fc290f44eccd8ac1515de4c65b3052a8",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/info_hash.rb",
-      "line": 27,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"WITH t AS (\\n        SELECT id, downloaded, completed, remaining\\n        FROM peers\\n        WHERE \\\"peers\\\".\\\"torrent_id\\\" = '#{@torrent.id}'\\n        AND (\\\"peers\\\".\\\"updated_at\\\" > NOW() - interval '#{(Setting.announce_interval * 2)} seconds')\\n    )\\n    SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,\\n           (SELECT COUNT(t.completed) from t) AS completed,\\n           (SELECT COUNT(id) from t WHERE t.remaining != 0) AS incomplete\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "InfoHash",
-        "method": "scrape"
-      },
-      "user_input": "(Setting.announce_interval * 2)",
-      "confidence": "High",
-      "note": "ID comes from database primary key"
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "2fcce92c1e3b5e1a4434e7bcc6d1cc5060dfb7d385753db4aab6b1ba1a4a79d0",
@@ -46,10 +26,10 @@
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/torrents/_form.html.erb",
-      "line": 51,
+      "line": 52,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "CategoryMetadataType.new.help_text",
-      "render_path": [{"type":"controller","class":"TorrentsController","method":"edit","line":87,"file":"app/controllers/torrents_controller.rb"},{"type":"template","name":"torrents/edit","line":3,"file":"app/views/torrents/edit.html.erb"}],
+      "render_path": [{"type":"controller","class":"TorrentsController","method":"edit","line":88,"file":"app/controllers/torrents_controller.rb"},{"type":"template","name":"torrents/edit","line":3,"file":"app/views/torrents/edit.html.erb"}],
       "location": {
         "type": "template",
         "template": "torrents/_form"
@@ -57,8 +37,28 @@
       "user_input": null,
       "confidence": "High",
       "note": "The only users who can set the help text are admins"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "706395cd162925f66af21f39ddfd64924c43ee2bc236569b681f420df9d2cf01",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/info_hash.rb",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"WITH t AS (\\n        SELECT id, downloaded, completed, remaining\\n        FROM peers\\n        WHERE \\\"peers\\\".\\\"torrent_id\\\" = '#{@torrent.id}'\\n        AND \\\"peers\\\".\\\"active\\\" = true\\n        AND (\\\"peers\\\".\\\"updated_at\\\" > NOW() - interval '#{(Setting.announce_interval * 2)} seconds')\\n    )\\n    SELECT (SELECT SUM(t.downloaded) from t) AS downloaded,\\n           (SELECT COUNT(t.completed) from t) AS completed,\\n           (SELECT COUNT(id) from t WHERE t.remaining != 0) AS incomplete\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "InfoHash",
+        "method": "scrape"
+      },
+      "user_input": "(Setting.announce_interval * 2)",
+      "confidence": "High",
+      "note": "Announce interval can only come from the admin"
     }
   ],
-  "updated": "2018-02-05 13:36:30 +0100",
+  "updated": "2018-02-17 19:26:33 +0100",
   "brakeman_version": "4.1.1"
 }
