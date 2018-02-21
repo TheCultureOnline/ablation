@@ -10,6 +10,7 @@ class TrackerController < ApplicationController
     hash = params[:info_hash].unpack("H*").first
     torrent = Torrent.select(:id, :info_hash, :release_id, :snatched, :name).find_by(info_hash: hash)
     failure("unregistered torrent") && (return) if torrent.nil?
+    set_torrent_for_raven torrent.id
     info_hash = InfoHash.new(torrent, params[:info_hash])
     event! @user_id, torrent
     announce = info_hash.announce(
@@ -26,6 +27,7 @@ class TrackerController < ApplicationController
       hash = params[:info_hash].unpack("H*").first
       torrent = Torrent.find_by(info_hash: hash)
       failure("unregistered torrent") && (return) if torrent.nil?
+      set_torrent_for_raven torrent.id
       result = InfoHash.new(torrent, params[:info_hash]).scrape
       render plain: result.bencode
     else
@@ -49,6 +51,11 @@ class TrackerController < ApplicationController
 
       def failure(code = 400, reason)
         render plain: { "failure reason" => reason }.bencode, status: code
+      end
+
+      def set_torrent_for_raven(torrent_id)
+        Raven.extra_context torrent: torrent_id \
+          unless Rails.application.secrets[:sentry_dsn].nil? || !Object.const_defined?("Raven")
       end
 
       def event!(user_id, torrent)
@@ -75,6 +82,8 @@ class TrackerController < ApplicationController
 
       def authenticate_user!
         @user_id = User.where(torrent_pass: params[:torrent_pass]).limit(1).pluck(:id)
+        Raven.user_context(id: @user_id) \
+          unless Rails.application.secrets[:sentry_dsn].nil? || !Object.const_defined?("Raven")
       end
 
       def peek_enabled?
