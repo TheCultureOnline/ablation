@@ -22,4 +22,10 @@ class ApplicationController < ActionController::Base
     def peek_enabled?
       current_user && current_user.admin?
     end
+
+    def authenticate_user!
+      super
+      Raven.user_context(id: current_user.id) \
+        unless Rails.application.secrets[:sentry_dsn].nil? || !Object.const_defined?("Raven")
+    end
 end
